@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button, StyleSheet, Text, View} from 'react-native'
+import { StyleSheet, Text, View} from 'react-native'
 import {Calendar} from 'react-native-calendars'
 
 export default function HomeScreen() {

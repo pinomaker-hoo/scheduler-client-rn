@@ -10,7 +10,7 @@ const BottomTab = createBottomTabNavigator()
 export default function BottomTabNavigator() {
   return (
     <BottomTab.Navigator
-      initialRouteName="ScreenA"
+      initialRouteName="메인"
       screenOptions={{headerShown: false}}
     >
       <BottomTab.Screen
