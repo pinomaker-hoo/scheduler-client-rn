@@ -1,6 +1,5 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {
-  Button,
   Image,
   StyleSheet,
   Text,
@@ -10,11 +9,15 @@ import {
 } from 'react-native'
 
 export default function LoginScreen({navigation}: any) {
+  const [id, setId] = useState('')
+  const [password, setPassword] = useState('')
+
   const onPressJoinBtn = () => {
     navigation.navigate('Register')
   }
 
   const opPressLogin = () => {
+    // console.log(id, password)
     navigation.navigate('Root')
   }
 
@@ -24,8 +27,17 @@ export default function LoginScreen({navigation}: any) {
         <Image style={styles.img} source={require('../assets/logo.png')} />
       </View>
       <View style={styles.bodyBox}>
-        <TextInput placeholder="id" style={styles.textInput} />
-        <TextInput placeholder="password" style={styles.textInput} />
+        <TextInput
+          onChangeText={id => setId(id)}
+          placeholder="id"
+          style={styles.textInput}
+        />
+        <TextInput
+          onChangeText={password => setPassword(password)}
+          placeholder="password"
+          style={styles.textInput}
+          secureTextEntry={true}
+        />
         <TouchableOpacity style={styles.btn} onPress={opPressLogin}>
           <Text style={styles.btnText}>LOGIN</Text>
         </TouchableOpacity>

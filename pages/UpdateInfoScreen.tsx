@@ -1,41 +1,37 @@
 import React, {useState} from 'react'
 import {StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native'
 
-export default function RegisterScreen({navigation}: any) {
+export default function UpdateInfoScreen({navigation}: any) {
   const [name, setName] = useState('')
   const [id, setId] = useState('')
   const [password, setPassword] = useState('')
   const [passwordc, setPasswordc] = useState('')
 
   const onPress = () => {
-    navigation.navigate('Login')
+    navigation.navigate('Root')
   }
-
   return (
     <View style={styles.container}>
-      <Text style={styles.headerText}>SIGN UP</Text>
+      <Text style={styles.headerText}>내 프로필</Text>
       <TextInput
         onChangeText={name => setName(name)}
-        placeholder="name"
+        placeholder="이름"
         style={styles.textInput}
       />
       <TextInput
         onChangeText={id => setId(id)}
-        placeholder="id"
+        placeholder="생년월일"
         style={styles.textInput}
       />
-      <TouchableOpacity style={styles.btn}>
-        <Text style={styles.btnText}>ID 중복 확인</Text>
-      </TouchableOpacity>
       <TextInput
         onChangeText={password => setPassword(password)}
-        placeholder="password"
+        placeholder="비밀번호 변경"
         secureTextEntry={true}
         style={styles.textInput}
       />
       <TextInput
         onChangeText={passwordc => setPasswordc(passwordc)}
-        placeholder="password check"
+        placeholder="비밀번호 확인"
         secureTextEntry={true}
         style={styles.textInput}
       />

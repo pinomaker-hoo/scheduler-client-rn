@@ -2,7 +2,10 @@ import React from 'react'
 import {StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native'
 import constant from '../common/constant'
 
-export default function SearchScreen() {
+export default function SearchScreen({navigation}: any) {
+  const onPress = () => {
+    navigation.navigate('MakeGroup')
+  }
   const data: string[] = [
     '동미대 모임',
     '동미대 모임',
@@ -14,7 +17,7 @@ export default function SearchScreen() {
     <View style={styles.container}>
       <View style={styles.header}>
         <TextInput style={styles.textInput} placeholder="그룹 찾기" />
-        <TouchableOpacity style={styles.groupBtn}>
+        <TouchableOpacity style={styles.groupBtn} onPress={onPress}>
           <Text>그룹 만들기</Text>
         </TouchableOpacity>
       </View>

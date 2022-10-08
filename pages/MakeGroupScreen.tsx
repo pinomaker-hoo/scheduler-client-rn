@@ -1,42 +1,37 @@
 import React, {useState} from 'react'
 import {StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native'
 
-export default function RegisterScreen({navigation}: any) {
+export default function MakeGroupScreen({navigation}: any) {
   const [name, setName] = useState('')
-  const [id, setId] = useState('')
   const [password, setPassword] = useState('')
-  const [passwordc, setPasswordc] = useState('')
+  const [memberCount, setMemberCount] = useState('')
+  const [color, setColor] = useState('')
 
   const onPress = () => {
-    navigation.navigate('Login')
+    navigation.navigate('Root')
   }
-
   return (
     <View style={styles.container}>
-      <Text style={styles.headerText}>SIGN UP</Text>
+      <Text style={styles.headerText}>그룹 만들기</Text>
       <TextInput
         onChangeText={name => setName(name)}
-        placeholder="name"
+        placeholder="그룹 이름"
         style={styles.textInput}
       />
-      <TextInput
-        onChangeText={id => setId(id)}
-        placeholder="id"
-        style={styles.textInput}
-      />
-      <TouchableOpacity style={styles.btn}>
-        <Text style={styles.btnText}>ID 중복 확인</Text>
-      </TouchableOpacity>
       <TextInput
         onChangeText={password => setPassword(password)}
-        placeholder="password"
+        placeholder="비밀번호"
         secureTextEntry={true}
         style={styles.textInput}
       />
       <TextInput
-        onChangeText={passwordc => setPasswordc(passwordc)}
-        placeholder="password check"
-        secureTextEntry={true}
+        onChangeText={memberCount => setMemberCount(memberCount)}
+        placeholder="정원 선택"
+        style={styles.textInput}
+      />
+      <TextInput
+        onChangeText={color => setColor(color)}
+        placeholder="그룹 색상 지정"
         style={styles.textInput}
       />
       <TouchableOpacity style={styles.btn} onPress={onPress}>
