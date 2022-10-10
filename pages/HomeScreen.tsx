@@ -1,9 +1,45 @@
-import React from 'react'
-import {StyleSheet, Text, View} from 'react-native'
+import React, {useState} from 'react'
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import {Calendar} from 'react-native-calendars'
+import {formatDate} from '../common/common'
 
-export default function HomeScreen() {
+export default function HomeScreen({navigation}: any) {
   const data = ['오늘은 치킨 먹자', '오늘은 개발하자']
+  const onPressNewBtn = () => {
+    navigation.navigate('NewDo')
+  }
+  const [selectedDate, setSelectedDate] = useState(formatDate(new Date()))
+
+  const posts = [
+    {
+      id: 1,
+      title: '제목입니다.',
+      contents: '내용입니다.',
+      date: '2022-02-26',
+    },
+    {
+      id: 2,
+
+      text: '내용입니다.',
+      date: '2022-02-27',
+    },
+  ]
+
+  const markedDates = posts.reduce((acc: any, current) => {
+    console.log(selectedDate)
+    const formattedDate = formatDate(new Date(current.date))
+    acc[formattedDate] = {marked: true}
+    return acc
+  }, {})
+
+  const markedSelectedDates = {
+    ...markedDates,
+    [selectedDate]: {
+      selected: true,
+      marked: markedDates[selectedDate]?.marked,
+    },
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -12,13 +48,22 @@ export default function HomeScreen() {
       </View>
       <View style={styles.body}>
         <View style={styles.calendarBox}>
-          <Calendar style={styles.calendar} />
+          <Calendar
+            markedDates={markedSelectedDates}
+            onDayPress={day => {
+              setSelectedDate(day.dateString)
+            }}
+            style={styles.calendar}
+          />
         </View>
         <View style={styles.listBox}>
           {data.map(item => (
             <Text>{item}</Text>
           ))}
         </View>
+        <TouchableOpacity onPress={onPressNewBtn}>
+          <Text>새로운 할 것</Text>
+        </TouchableOpacity>
       </View>
     </View>
   )

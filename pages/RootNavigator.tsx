@@ -5,6 +5,7 @@ import DateScreen from './DateScreen'
 import LoginScreen from './LoginScreen'
 import MakeGroupScreen from './MakeGroupScreen'
 import MoneyScreen from './MoneyScreen'
+import NewDoingScreen from './NewDoingScreen'
 import RegisterScreen from './RegisterScreen'
 import UpdateInfoScreen from './UpdateInfoScreen'
 
@@ -47,6 +48,11 @@ export default function RootNavigator() {
         <Stack.Screen
           name="Date"
           component={DateScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="NewDo"
+          component={NewDoingScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

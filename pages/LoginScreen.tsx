@@ -20,10 +20,10 @@ export default function LoginScreen({navigation}: any) {
   }
 
   const opPressLoginBtn = async () => {
-    if (!nullCheck([id, password])) return Alert.alert('입력 해주세요.')
-    const {data} = await login(id, password)
-    if (!data) return Alert.alert('로그인 실패')
-    Alert.alert('로그인 성공')
+    // if (!nullCheck([id, password])) return Alert.alert('입력 해주세요.')
+    // const {data} = await login(id, password)
+    // if (!data) return Alert.alert('로그인 실패')
+    // Alert.alert('로그인 성공')
     navigation.navigate('Root')
   }
 

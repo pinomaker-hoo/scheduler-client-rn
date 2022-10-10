@@ -8,10 +8,10 @@ export default function DateScreen({navigation}: any) {
 
   return (
     <View style={styles.container}>
-      <Text>돈 계산</Text>
-      <TouchableOpacity onPress={onPress}>
-        <Text>BACK</Text>
-      </TouchableOpacity>
+      <View style={styles.header}>
+        <Text>디데이 설정</Text>
+      </View>
+      <View style={styles.body}></View>
     </View>
   )
 }
@@ -19,8 +19,16 @@ export default function DateScreen({navigation}: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
+  },
+  header: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white',
+  },
+  body: {
+    flex: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 })
