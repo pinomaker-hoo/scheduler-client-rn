@@ -8,12 +8,11 @@ const auth = axios.create({
 })
 
 export const login = async (id: string, password: string) => {
-  const res = await auth({
+  return await auth({
     url: '/local',
     method: 'post',
     data: {id, password},
   })
-  console.log(res)
 }
 
 export const register = async (id: string, name: string, password: string) => {

@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import {
+  Alert,
   Image,
   StyleSheet,
   Text,
@@ -7,6 +8,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
+import {login} from '../api/auth'
+import {nullCheck} from '../common/common'
 
 export default function LoginScreen({navigation}: any) {
   const [id, setId] = useState('')
@@ -16,8 +19,11 @@ export default function LoginScreen({navigation}: any) {
     navigation.navigate('Register')
   }
 
-  const opPressLogin = () => {
-    // console.log(id, password)
+  const opPressLoginBtn = async () => {
+    if (!nullCheck([id, password])) return Alert.alert('입력 해주세요.')
+    const {data} = await login(id, password)
+    if (!data) return Alert.alert('로그인 실패')
+    Alert.alert('로그인 성공')
     navigation.navigate('Root')
   }
 
@@ -38,7 +44,7 @@ export default function LoginScreen({navigation}: any) {
           style={styles.textInput}
           secureTextEntry={true}
         />
-        <TouchableOpacity style={styles.btn} onPress={opPressLogin}>
+        <TouchableOpacity style={styles.btn} onPress={opPressLoginBtn}>
           <Text style={styles.btnText}>LOGIN</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.btn} onPress={onPressJoinBtn}>
