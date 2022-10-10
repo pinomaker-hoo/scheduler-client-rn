@@ -1,18 +1,22 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native'
+import {getGroupList} from '../api/group'
 import constant from '../common/constant'
 
 export default function SearchScreen({navigation}: any) {
   const onPress = () => {
     navigation.navigate('MakeGroup')
   }
-  const data: string[] = [
-    '동미대 모임',
-    '동미대 모임',
-    '동미대 모임',
-    '동미대 모임',
-    '동미대 모임',
-  ]
+  const [dataList, setDataList] = useState([])
+
+  useEffect(() => {
+    getGroupList().then(res => {
+      const {data} = res
+      console.log(data)
+      setDataList(() => data)
+    })
+  }, [])
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -22,11 +26,11 @@ export default function SearchScreen({navigation}: any) {
         </TouchableOpacity>
       </View>
       <View style={styles.body}>
-        {data.map(item => (
+        {dataList.map((item: any) => (
           <View style={styles.rows}>
-            <Text style={styles.text}>{item}</Text>
-            <Text style={styles.text}>김도연</Text>
-            <Text style={styles.text}>2/5</Text>
+            <Text style={styles.text}>{item.name}</Text>
+            <Text style={styles.text}>{item.madePerson.name}</Text>
+            <Text style={styles.text}>{item.memberCount}</Text>
             <Text style={styles.text}>잠김</Text>
             <TouchableOpacity style={styles.rowsBtn}>
               <Text style={styles.btnText}>입장</Text>

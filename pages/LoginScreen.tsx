@@ -10,6 +10,7 @@ import {
 } from 'react-native'
 import {login} from '../api/auth'
 import {nullCheck} from '../common/common'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function LoginScreen({navigation}: any) {
   const [id, setId] = useState('')
@@ -20,11 +21,16 @@ export default function LoginScreen({navigation}: any) {
   }
 
   const opPressLoginBtn = async () => {
-    // if (!nullCheck([id, password])) return Alert.alert('입력 해주세요.')
-    // const {data} = await login(id, password)
-    // if (!data) return Alert.alert('로그인 실패')
-    // Alert.alert('로그인 성공')
-    navigation.navigate('Root')
+    try {
+      if (!nullCheck([id, password])) return Alert.alert('입력 해주세요.')
+      const {data} = await login(id, password)
+      if (!data) return Alert.alert('로그인 실패')
+      await AsyncStorage.setItem('accesstoken', JSON.stringify(data.token))
+      Alert.alert('로그인 성공')
+      navigation.navigate('Root')
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   return (

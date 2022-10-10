@@ -1,5 +1,14 @@
 import React, {useState} from 'react'
-import {StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native'
+import {
+  Alert,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native'
+import {saveGroup} from '../api/group'
+import {nullCheck} from '../common/common'
 
 export default function MakeGroupScreen({navigation}: any) {
   const [name, setName] = useState('')
@@ -7,9 +16,13 @@ export default function MakeGroupScreen({navigation}: any) {
   const [memberCount, setMemberCount] = useState('')
   const [color, setColor] = useState('')
 
-  const onPress = () => {
+  const onPress = async () => {
+    if (!nullCheck([name, password, memberCount, color]))
+      return Alert.alert('입력 하세요.')
+    const {data} = await saveGroup(name, password, Number(memberCount), color)
     navigation.navigate('Root')
   }
+
   return (
     <View style={styles.container}>
       <Text style={styles.headerText}>그룹 만들기</Text>

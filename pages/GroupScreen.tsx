@@ -1,15 +1,18 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import {getGroupList} from '../api/group'
 import constants from '../common/constant'
 
 export default function GroupScreen() {
-  const title = [
-    '동미대 모임',
-    '동미대 모임',
-    '동미대 모임',
-    '동미대 모임',
-    '동미대 모임',
-  ]
+  const [dataList, setDataList] = useState([])
+
+  useEffect(() => {
+    getGroupList().then(res => {
+      const {data} = res
+      setDataList(() => data)
+    })
+    console.log(dataList)
+  }, [])
 
   return (
     <View style={styles.container}>
@@ -17,9 +20,9 @@ export default function GroupScreen() {
         <Text style={styles.headerText}>내 그룹</Text>
       </View>
       <View style={styles.body}>
-        {title.map(item => (
+        {/* {dataList.map((item: any) => (
           <View style={styles.lows}>
-            <Text style={styles.text}>{item}</Text>
+            <Text style={styles.text}>{item.name}</Text>
 
             <TouchableOpacity style={styles.btn}>
               <Text style={styles.btnText}>삭제</Text>
@@ -28,7 +31,7 @@ export default function GroupScreen() {
               <Text style={styles.btnText}>스케줄표</Text>
             </TouchableOpacity>
           </View>
-        ))}
+        ))} */}
       </View>
     </View>
   )

@@ -1,10 +1,20 @@
 import React, {useState} from 'react'
-import {StyleSheet, View, Text, TextInput, TouchableOpacity} from 'react-native'
+import {
+  StyleSheet,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+} from 'react-native'
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
+import {saveTodos} from '../api/todos'
 import {formatDate} from '../common/common'
 
-export default function NewDoingScreen() {
-  const [text, onChangeText] = useState('')
+export default function NewDoingScreen({navigation}: any) {
+  const [title, setTitle] = useState('')
+  const [place, setPlace] = useState('')
+  const [date, setDate] = useState('')
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
 
   const showDatePicker = () => {
@@ -17,7 +27,17 @@ export default function NewDoingScreen() {
 
   const handleConfirm = (date: any) => {
     hideDatePicker()
-    onChangeText(formatDate(date))
+    setDate(formatDate(date))
+  }
+
+  const onPressAddBtn = async () => {
+    try {
+      const {data} = await saveTodos(date, place, title)
+      if (!data) return Alert.alert('ERROR 발생')
+      navigation.navigate('Root')
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   return (
@@ -26,7 +46,11 @@ export default function NewDoingScreen() {
         <Text>일정 추가</Text>
       </View>
       <View style={styles.body}>
-        <TextInput placeholder="제목" style={styles.textInput} />
+        <TextInput
+          onChangeText={title => setTitle(title)}
+          placeholder="제목"
+          style={styles.textInput}
+        />
         <TouchableOpacity onPress={showDatePicker}>
           <TextInput
             pointerEvents="none"
@@ -35,7 +59,7 @@ export default function NewDoingScreen() {
             placeholderTextColor="#000000"
             underlineColorAndroid="transparent"
             editable={false}
-            value={text}
+            value={date}
           />
           <DateTimePickerModal
             isVisible={isDatePickerVisible}
@@ -44,8 +68,12 @@ export default function NewDoingScreen() {
             onCancel={hideDatePicker}
           />
         </TouchableOpacity>
-        <TextInput placeholder="장소" style={styles.textInput} />
-        <TouchableOpacity>
+        <TextInput
+          onChangeText={place => setPlace(place)}
+          placeholder="장소"
+          style={styles.textInput}
+        />
+        <TouchableOpacity onPress={onPressAddBtn}>
           <Text>추가하기</Text>
         </TouchableOpacity>
       </View>

@@ -1,6 +1,5 @@
 'use strict'
 import axios from 'axios'
-import {Alert} from 'react-native'
 
 const auth = axios.create({
   baseURL: 'http://localhost:3020/auth',
@@ -8,6 +7,7 @@ const auth = axios.create({
 })
 
 export const login = async (id: string, password: string) => {
+  console.log(id, password)
   return await auth({
     url: '/local',
     method: 'post',

@@ -1,32 +1,32 @@
-import React, {useState} from 'react'
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import React, {useEffect, useState} from 'react'
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  ScrollView,
+} from 'react-native'
 import {Calendar} from 'react-native-calendars'
+import {getTodos} from '../api/todos'
 import {formatDate} from '../common/common'
+import constant from '../common/constant'
 
 export default function HomeScreen({navigation}: any) {
-  const data = ['오늘은 치킨 먹자', '오늘은 개발하자']
+  const [selectedDate, setSelectedDate] = useState(formatDate(new Date()))
+  const [dataList, setDataList] = useState([])
+
+  useEffect(() => {
+    getTodos().then(res => {
+      const {data} = res
+      setDataList(() => data)
+    })
+  }, [])
+
   const onPressNewBtn = () => {
     navigation.navigate('NewDo')
   }
-  const [selectedDate, setSelectedDate] = useState(formatDate(new Date()))
 
-  const posts = [
-    {
-      id: 1,
-      title: '제목입니다.',
-      contents: '내용입니다.',
-      date: '2022-02-26',
-    },
-    {
-      id: 2,
-
-      text: '내용입니다.',
-      date: '2022-02-27',
-    },
-  ]
-
-  const markedDates = posts.reduce((acc: any, current) => {
-    console.log(selectedDate)
+  const markedDates = dataList.reduce((acc: any, current: any) => {
     const formattedDate = formatDate(new Date(current.date))
     acc[formattedDate] = {marked: true}
     return acc
@@ -56,14 +56,20 @@ export default function HomeScreen({navigation}: any) {
             style={styles.calendar}
           />
         </View>
-        <View style={styles.listBox}>
-          {data.map(item => (
-            <Text>{item}</Text>
-          ))}
+        <View style={styles.listOut}>
+          <ScrollView style={styles.listBox}>
+            {dataList
+              .filter((item: any) => item.date === selectedDate)
+              .map((item: any) => (
+                <Text style={styles.textList}>{item.title}</Text>
+              ))}
+          </ScrollView>
         </View>
-        <TouchableOpacity onPress={onPressNewBtn}>
-          <Text>새로운 할 것</Text>
-        </TouchableOpacity>
+        <View style={styles.addBtnView}>
+          <TouchableOpacity style={styles.addBtn} onPress={onPressNewBtn}>
+            <Text style={styles.addBtnText}>새로운 할 것</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   )
@@ -87,9 +93,35 @@ const styles = StyleSheet.create({
     flex: 6,
   },
   calendarBox: {
-    flex: 1.3,
+    flex: 5,
   },
   listBox: {
+    width: constant.width - 100,
+    backgroundColor: '#A59CB5',
+  },
+  listOut: {
+    flex: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  textList: {
+    fontSize: 20,
+    marginTop: 20,
+    marginLeft: 20,
+  },
+  addBtnView: {
+    justifyContent: 'center',
+    alignItems: 'center',
     flex: 1,
+  },
+  addBtn: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#A59CB5',
+    width: 100,
+    height: 40,
+  },
+  addBtnText: {
+    color: 'white',
   },
 })
