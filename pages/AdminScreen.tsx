@@ -14,7 +14,6 @@ export default function AdminScreen({navigation}: any) {
     navigation.navigate('Date')
   }
 
-  
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -32,7 +31,7 @@ export default function AdminScreen({navigation}: any) {
         <TouchableOpacity style={styles.bodyBtn} onPress={onPressMoney}>
           <Text>임금 확인</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.bodyBtn}>
+        <TouchableOpacity style={styles.bodyBtn} onPress={onPressDate}>
           <Text>디데이 설정</Text>
         </TouchableOpacity>
       </View>
