@@ -1,5 +1,15 @@
+import axios from 'axios'
 import React, {useState} from 'react'
-import {StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  View,
+} from 'react-native'
+import {findUserById, register} from '../api/auth'
+import {nullCheck} from '../common/common'
 
 export default function RegisterScreen({navigation}: any) {
   const [name, setName] = useState('')
@@ -7,7 +17,21 @@ export default function RegisterScreen({navigation}: any) {
   const [password, setPassword] = useState('')
   const [passwordc, setPasswordc] = useState('')
 
-  const onPress = () => {
+  const onPressIdBtn = async () => {
+    if (!nullCheck([id])) return Alert.alert('입력 해주세요.')
+    const {data} = await findUserById(id)
+    if (!data) return Alert.alert('사용 가능합니다.')
+    return Alert.alert('사용 중인 ID 입니다.')
+  }
+
+  const onPressJoinBtn = async () => {
+    if (!nullCheck([name, id, password, passwordc]))
+      return Alert.alert('입력 해주세요.')
+    if (password !== passwordc)
+      return Alert.alert('비밀번호와 비밀번호 체크가 같지 않습니다.')
+    const {data} = await register(id, name, password)
+    if (!data) return Alert.alert('회원 가입 실패')
+    Alert.alert('회원 가입 성공')
     navigation.navigate('Login')
   }
 
@@ -24,7 +48,7 @@ export default function RegisterScreen({navigation}: any) {
         placeholder="id"
         style={styles.textInput}
       />
-      <TouchableOpacity style={styles.btn}>
+      <TouchableOpacity style={styles.btn} onPress={onPressIdBtn}>
         <Text style={styles.btnText}>ID 중복 확인</Text>
       </TouchableOpacity>
       <TextInput
@@ -39,7 +63,7 @@ export default function RegisterScreen({navigation}: any) {
         secureTextEntry={true}
         style={styles.textInput}
       />
-      <TouchableOpacity style={styles.btn} onPress={onPress}>
+      <TouchableOpacity style={styles.btn} onPress={onPressJoinBtn}>
         <Text style={styles.btnText}>JOIN</Text>
       </TouchableOpacity>
     </View>
