@@ -1,7 +1,14 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function AdminScreen({navigation}: any) {
+  const [name, setName] = useState('')
+  useEffect(() => {
+    AsyncStorage.getItem('user').then(user => {
+      if (user) setName(JSON.parse(user).name)
+    })
+  }, [])
   const onPressUpdate = () => {
     navigation.navigate('Update')
   }
@@ -14,11 +21,16 @@ export default function AdminScreen({navigation}: any) {
     navigation.navigate('Date')
   }
 
+  const onPressLogout = async () => {
+    await AsyncStorage.removeItem('accesstoken')
+    navigation.navigate('Login')
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.nameText}>김도연</Text>
-        <TouchableOpacity style={styles.headerBtn}>
+        <Text style={styles.nameText}>{name}</Text>
+        <TouchableOpacity style={styles.headerBtn} onPress={onPressLogout}>
           <Text>로그아웃</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.headerBtn} onPress={onPressUpdate}>

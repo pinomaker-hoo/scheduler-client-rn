@@ -26,6 +26,7 @@ export default function LoginScreen({navigation}: any) {
       const {data} = await login(id, password)
       if (!data) return Alert.alert('로그인 실패')
       await AsyncStorage.setItem('accesstoken', JSON.stringify(data.token))
+      await AsyncStorage.setItem('user', JSON.stringify(data.user))
       Alert.alert('로그인 성공')
       navigation.navigate('Root')
     } catch (err) {
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
     marginTop: -100,
   },
   img: {
-    width: 200,
+    width: 230,
     height: 145,
   },
   textInput: {

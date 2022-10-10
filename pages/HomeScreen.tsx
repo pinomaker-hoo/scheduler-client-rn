@@ -20,7 +20,7 @@ export default function HomeScreen({navigation}: any) {
       const {data} = res
       setDataList(() => data)
     })
-  }, [])
+  }, [dataList])
 
   const onPressNewBtn = () => {
     navigation.navigate('NewDo')
@@ -61,7 +61,7 @@ export default function HomeScreen({navigation}: any) {
             {dataList
               .filter((item: any) => item.date === selectedDate)
               .map((item: any) => (
-                <Text style={styles.textList}>{item.title}</Text>
+                <Text style={styles.textList}> - {item.title}</Text>
               ))}
           </ScrollView>
         </View>

@@ -1,5 +1,12 @@
 import React, {memo, useState} from 'react'
-import {View, Text, TouchableOpacity, StyleSheet, TextInput} from 'react-native'
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  TextInput,
+  ScrollView,
+} from 'react-native'
 
 export default function MoneyScreen({navigation}: any) {
   const [pay, setPay] = useState(0)
@@ -25,14 +32,14 @@ export default function MoneyScreen({navigation}: any) {
           />
         </View>
         <View style={styles.rowsView}>
-          <Text>시급</Text>
+          <Text>시간</Text>
           <TextInput
             onChangeText={hours => setHours(Number(hours))}
             style={styles.textInput}
           />
         </View>
         <View style={styles.rowsView}>
-          <Text>시급</Text>
+          <Text>급여</Text>
           <Text style={styles.textInput}>
             {String(money)
               .toString()

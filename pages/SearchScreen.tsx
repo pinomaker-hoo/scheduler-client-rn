@@ -1,27 +1,54 @@
 import React, {useEffect, useState} from 'react'
-import {StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native'
+import {
+  Alert,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import {getGroupList} from '../api/group'
+import {joinGroup} from '../api/groupUser'
 import constant from '../common/constant'
 
 export default function SearchScreen({navigation}: any) {
+  const [dataList, setDataList] = useState([])
+
   const onPress = () => {
     navigation.navigate('MakeGroup')
   }
-  const [dataList, setDataList] = useState([])
 
   useEffect(() => {
     getGroupList().then(res => {
       const {data} = res
-      console.log(data)
       setDataList(() => data)
     })
-  }, [])
+  }, [dataList])
+
+  const onPressPrompt = async (a: string, b: string, idx: number) => {
+    if (a !== b) return Alert.alert('비밀번호가 틀립니다.')
+    const {data} = await joinGroup(idx)
+    console.log(data)
+  }
+
+  const onPressBtn = (password: string, idx: number) => {
+    Alert.prompt('입장 하시겠습니까??', '비밀번호를 입력  하세요', [
+      {
+        text: '아니요',
+        style: 'cancel',
+      },
+      {
+        text: '네',
+        onPress: (value: any) => onPressPrompt(value, password, idx),
+      },
+    ])
+  }
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <TextInput style={styles.textInput} placeholder="그룹 찾기" />
-        <TouchableOpacity style={styles.groupBtn} onPress={onPress}>
+        <TouchableOpacity style={styles.groupBtn2} onPress={onPress}>
           <Text>그룹 만들기</Text>
         </TouchableOpacity>
       </View>
@@ -32,7 +59,10 @@ export default function SearchScreen({navigation}: any) {
             <Text style={styles.text}>{item.madePerson.name}</Text>
             <Text style={styles.text}>{item.memberCount}</Text>
             <Text style={styles.text}>잠김</Text>
-            <TouchableOpacity style={styles.rowsBtn}>
+            <TouchableOpacity
+              style={styles.rowsBtn}
+              onPress={() => onPressBtn(item.password, item.idx)}
+            >
               <Text style={styles.btnText}>입장</Text>
             </TouchableOpacity>
           </View>
@@ -62,7 +92,15 @@ const styles = StyleSheet.create({
     marginRight: 20,
     backgroundColor: '#D9D9D9',
   },
-  groupBtn: {
+  groupBtn1: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#CDC2DF',
+    width: 30,
+    marginRight: 10,
+    height: 30,
+  },
+  groupBtn2: {
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#CDC2DF',

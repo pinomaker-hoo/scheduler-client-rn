@@ -1,18 +1,49 @@
 import React, {useEffect, useState} from 'react'
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
-import {getGroupList} from '../api/group'
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
+import {Calendar} from 'react-native-calendars'
+import {getTodosList} from '../api/groupTodos'
+import {findGroupUser} from '../api/groupUser'
+import {formatDate} from '../common/common'
 import constants from '../common/constant'
 
 export default function GroupScreen() {
   const [dataList, setDataList] = useState([])
+  const [selectedDate, setSelectedDate] = useState(formatDate(new Date()))
+  const [schedulerData, setSchedulerData] = useState([])
+  const [toggled, setToggled] = useState(true)
 
   useEffect(() => {
-    getGroupList().then(res => {
+    findGroupUser().then(res => {
       const {data} = res
       setDataList(() => data)
     })
-    console.log(dataList)
   }, [])
+
+  const onPressScheduler = async (idx: number) => {
+    const {data} = await getTodosList(String(idx))
+    setSchedulerData(() => data)
+    setToggled(current => !current)
+  }
+
+  const markedDates = schedulerData.reduce((acc: any, current: any) => {
+    const formattedDate = formatDate(new Date(current.date))
+    acc[formattedDate] = {marked: true}
+    return acc
+  }, {})
+
+  const markedSelectedDates = {
+    ...markedDates,
+    [selectedDate]: {
+      selected: true,
+      marked: markedDates[selectedDate]?.marked,
+    },
+  }
 
   return (
     <View style={styles.container}>
@@ -20,18 +51,35 @@ export default function GroupScreen() {
         <Text style={styles.headerText}>내 그룹</Text>
       </View>
       <View style={styles.body}>
-        {/* {dataList.map((item: any) => (
-          <View style={styles.lows}>
-            <Text style={styles.text}>{item.name}</Text>
-
-            <TouchableOpacity style={styles.btn}>
-              <Text style={styles.btnText}>삭제</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.btn}>
-              <Text style={styles.btnText}>스케줄표</Text>
-            </TouchableOpacity>
-          </View>
-        ))} */}
+        <ScrollView>
+          {dataList.map((item: any) => (
+            <View>
+              <View style={styles.lows}>
+                <Text style={styles.text}>{item.group.name}</Text>
+                <TouchableOpacity style={styles.btn}>
+                  <Text style={styles.btnText}>삭제</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.btn}
+                  onPress={() => onPressScheduler(item.idx)}
+                >
+                  <Text style={styles.btnText}>스케줄표</Text>
+                </TouchableOpacity>
+              </View>
+              <View>
+                {toggled ? (
+                  <Calendar
+                    markedDates={markedSelectedDates}
+                    onDayPress={day => {
+                      setSelectedDate(day.dateString)
+                    }}
+                    style={styles.calendar}
+                  />
+                ) : null}
+              </View>
+            </View>
+          ))}
+        </ScrollView>
       </View>
     </View>
   )
@@ -76,5 +124,9 @@ const styles = StyleSheet.create({
   },
   btnText: {
     fontSize: 10,
+  },
+  calendar: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
   },
 })
