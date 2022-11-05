@@ -13,6 +13,7 @@ import {joinGroup} from '../api/groupUser'
 import constant from '../common/constant'
 
 export default function SearchScreen({navigation}: any) {
+  const [keyword, setKeyword] = useState('')
   const [dataList, setDataList]: any = useState([])
   const [loading, setLoading] = useState(true)
   const [user, setUser]: any = useState()
@@ -61,7 +62,11 @@ export default function SearchScreen({navigation}: any) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TextInput style={styles.textInput} placeholder="그룹 찾기" />
+        <TextInput
+          style={styles.textInput}
+          placeholder="그룹 찾기"
+          onChangeText={keyword => setKeyword(keyword)}
+        />
         <TouchableOpacity style={styles.groupBtn2} onPress={onPress}>
           <Text>그룹 만들기</Text>
         </TouchableOpacity>
@@ -69,6 +74,7 @@ export default function SearchScreen({navigation}: any) {
       <View style={styles.body}>
         {dataList
           .filter((item: any) => item.madePerson.idx !== user.idx)
+          .filter((item: any) => item.name.includes(keyword))
           .map((item: any) => (
             <View style={styles.rows} key={item.idx}>
               <Text style={styles.text}>{item.name}</Text>
