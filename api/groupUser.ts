@@ -30,3 +30,14 @@ export const findGroupUser = async () => {
     },
   })
 }
+
+export const deleteGroupUser = async (idx: string) => {
+  try {
+    return await groupUser({
+      url: `/${idx}`,
+      method: 'delete',
+    })
+  } catch (err) {
+    console.log(err)
+  }
+}

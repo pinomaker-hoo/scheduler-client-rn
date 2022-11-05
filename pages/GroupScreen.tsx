@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {
+  Alert,
   ScrollView,
   StyleSheet,
   Text,
@@ -8,7 +9,7 @@ import {
 } from 'react-native'
 import {Calendar} from 'react-native-calendars'
 import {getTodosList} from '../api/groupTodos'
-import {findGroupUser} from '../api/groupUser'
+import {deleteGroupUser, findGroupUser} from '../api/groupUser'
 import {formatDate} from '../common/common'
 import constants from '../common/constant'
 
@@ -17,13 +18,17 @@ export default function GroupScreen() {
   const [selectedDate, setSelectedDate] = useState(formatDate(new Date()))
   const [schedulerData, setSchedulerData] = useState([])
   const [toggled, setToggled] = useState(true)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    findGroupUser().then(res => {
-      const {data} = res
-      setDataList(() => data)
-    })
+    callApi()
   }, [])
+
+  const callApi = async () => {
+    const {data} = await findGroupUser()
+    setDataList(data)
+    setLoading(false)
+  }
 
   const onPressScheduler = async (idx: number) => {
     const {data} = await getTodosList(String(idx))
@@ -45,6 +50,14 @@ export default function GroupScreen() {
     },
   }
 
+  const onPressDeleteBtn = async (idx: string) => {
+    const {data}: any = await deleteGroupUser(idx)
+    console.log(data)
+    if (data) return Alert.alert('삭제 완료')
+    return Alert.alert('ERROR')
+  }
+
+  if (loading) return null
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -56,7 +69,10 @@ export default function GroupScreen() {
             <View>
               <View style={styles.lows}>
                 <Text style={styles.text}>{item.group.name}</Text>
-                <TouchableOpacity style={styles.btn}>
+                <TouchableOpacity
+                  style={styles.btn}
+                  onPress={() => onPressDeleteBtn(String(item.idx))}
+                >
                   <Text style={styles.btnText}>삭제</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
