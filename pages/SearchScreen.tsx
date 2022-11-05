@@ -41,7 +41,8 @@ export default function SearchScreen({navigation}: any) {
   const onPressPrompt = async (a: string, b: string, idx: number) => {
     if (a !== b) return Alert.alert('비밀번호가 틀립니다.')
     const {data} = await joinGroup(idx)
-    if (data) return navigation.navigate('Group')
+    console.log(data)
+    if (data) return navigation.navigate('그룹')
     return Alert.alert('ERROR')
   }
 
