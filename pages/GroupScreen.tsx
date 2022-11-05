@@ -15,9 +15,6 @@ import constants from '../common/constant'
 
 export default function GroupScreen() {
   const [dataList, setDataList] = useState([])
-  const [selectedDate, setSelectedDate] = useState(formatDate(new Date()))
-  const [schedulerData, setSchedulerData] = useState([])
-  const [toggled, setToggled] = useState(true)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -28,6 +25,35 @@ export default function GroupScreen() {
     const {data} = await findGroupUser()
     setDataList(data)
     setLoading(false)
+  }
+
+  if (loading) return null
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>내 그룹</Text>
+      </View>
+      <View style={styles.body}>
+        <ScrollView>
+          {dataList.map((item: any) => (
+            <CalenderView key={item.idx} data={item} />
+          ))}
+        </ScrollView>
+      </View>
+    </View>
+  )
+}
+
+const CalenderView = (props: any) => {
+  const [selectedDate, setSelectedDate] = useState(formatDate(new Date()))
+  const [schedulerData, setSchedulerData] = useState([])
+  const [toggled, setToggled] = useState(true)
+
+  const onPressDeleteBtn = async (idx: string) => {
+    const {data}: any = await deleteGroupUser(idx)
+    console.log(data)
+    if (data) return Alert.alert('삭제 완료')
+    return Alert.alert('ERROR')
   }
 
   const onPressScheduler = async (idx: number) => {
@@ -49,53 +75,41 @@ export default function GroupScreen() {
       marked: markedDates[selectedDate]?.marked,
     },
   }
+  console.log(props.data)
 
-  const onPressDeleteBtn = async (idx: string) => {
-    const {data}: any = await deleteGroupUser(idx)
-    console.log(data)
-    if (data) return Alert.alert('삭제 완료')
-    return Alert.alert('ERROR')
-  }
-
-  if (loading) return null
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>내 그룹</Text>
+    <View>
+      <View style={styles.lows}>
+        <Text style={styles.text}>{props.data.group.name}</Text>
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => onPressDeleteBtn(String(props.data.idx))}
+        >
+          <Text style={styles.btnText}>삭제</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => onPressScheduler(props.data.idx)}
+        >
+          <Text style={styles.btnText}>스케줄표</Text>
+        </TouchableOpacity>
       </View>
-      <View style={styles.body}>
-        <ScrollView>
-          {dataList.map((item: any) => (
-            <View>
-              <View style={styles.lows}>
-                <Text style={styles.text}>{item.group.name}</Text>
-                <TouchableOpacity
-                  style={styles.btn}
-                  onPress={() => onPressDeleteBtn(String(item.idx))}
-                >
-                  <Text style={styles.btnText}>삭제</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.btn}
-                  onPress={() => onPressScheduler(item.idx)}
-                >
-                  <Text style={styles.btnText}>스케줄표</Text>
-                </TouchableOpacity>
-              </View>
-              <View>
-                {toggled ? (
-                  <Calendar
-                    markedDates={markedSelectedDates}
-                    onDayPress={day => {
-                      setSelectedDate(day.dateString)
-                    }}
-                    style={styles.calendar}
-                  />
-                ) : null}
-              </View>
-            </View>
-          ))}
-        </ScrollView>
+      <View>
+        {toggled ? (
+          <Calendar
+            markedDates={markedSelectedDates}
+            onDayPress={day => {
+              setSelectedDate(day.dateString)
+            }}
+            theme={{
+              selectedDayBackgroundColor: props.data.group.color,
+              arrowColor: props.data.group.color,
+              dotColor: props.data.group.color,
+              todayTextColor: props.data.group.color,
+            }}
+            style={styles.calendar}
+          />
+        ) : null}
       </View>
     </View>
   )
