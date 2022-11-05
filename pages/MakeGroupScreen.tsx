@@ -8,6 +8,7 @@ import {
   View,
 } from 'react-native'
 import {saveGroup} from '../api/group'
+import {joinGroup} from '../api/groupUser'
 import {nullCheck} from '../common/common'
 
 export default function MakeGroupScreen({navigation}: any) {
@@ -20,7 +21,9 @@ export default function MakeGroupScreen({navigation}: any) {
     if (!nullCheck([name, password, memberCount, color]))
       return Alert.alert('입력 하세요.')
     const {data} = await saveGroup(name, password, Number(memberCount), color)
-    navigation.navigate('Root')
+    const {data: data2} = await joinGroup(data.idx)
+    if (data2) return navigation.navigate('Root')
+    return Alert.alert('ERROR')
   }
 
   return (
