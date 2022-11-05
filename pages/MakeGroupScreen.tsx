@@ -10,6 +10,7 @@ import {
 import {saveGroup} from '../api/group'
 import {joinGroup} from '../api/groupUser'
 import {nullCheck} from '../common/common'
+import RNPickerSelect from 'react-native-picker-select'
 
 export default function MakeGroupScreen({navigation}: any) {
   const [name, setName] = useState('')
@@ -45,13 +46,21 @@ export default function MakeGroupScreen({navigation}: any) {
         placeholder="정원 선택"
         style={styles.textInput}
       />
-      <TextInput
-        onChangeText={color => setColor(color)}
-        placeholder="그룹 색상 지정"
-        style={styles.textInput}
-      />
+      <View style={styles.select}>
+        <RNPickerSelect
+          onValueChange={value => setColor(value)}
+          items={[
+            {label: 'BLUE', value: 'BLUE'},
+            {label: 'GREEN', value: 'GREEN'},
+            {label: 'RED', value: 'RED'},
+            {label: 'YELLOW', value: 'YELLOW'},
+            {label: 'ORANGE', value: 'ORANGE'},
+          ]}
+          placeholder="색상 선택"
+        />
+      </View>
       <TouchableOpacity style={styles.btn} onPress={onPress}>
-        <Text style={styles.btnText}>JOIN</Text>
+        <Text style={styles.btnText}>생성하기</Text>
       </TouchableOpacity>
     </View>
   )
@@ -89,5 +98,14 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: '#C47DFF',
     marginBottom: 30,
+  },
+  select: {
+    width: 240,
+    height: 45,
+    backgroundColor: '#D9D9D9',
+    marginBottom: 20,
+    borderRadius: 10,
+    paddingLeft: 10,
+    justifyContent: 'center',
   },
 })
