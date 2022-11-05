@@ -36,3 +36,14 @@ export const getGroupList = async () => {
     },
   })
 }
+
+export const getGroup = async (idx: string) => {
+  try {
+    return await group({
+      url: `/${idx}`,
+      method: 'get',
+    })
+  } catch (err) {
+    console.log(err)
+  }
+}

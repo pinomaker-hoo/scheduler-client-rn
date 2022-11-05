@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import {
   Alert,
   ScrollView,
@@ -8,6 +9,7 @@ import {
   View,
 } from 'react-native'
 import {Calendar} from 'react-native-calendars'
+import {getGroup} from '../api/group'
 import {getTodosList} from '../api/groupTodos'
 import {deleteGroupUser, findGroupUser} from '../api/groupUser'
 import {formatDate} from '../common/common'
@@ -48,6 +50,22 @@ const CalenderView = (props: any) => {
   const [selectedDate, setSelectedDate] = useState(formatDate(new Date()))
   const [schedulerData, setSchedulerData] = useState([])
   const [toggled, setToggled] = useState(true)
+  const [data, setData]: any = useState()
+  const [loading, setLoading] = useState(true)
+  const [user, setUser]: any = useState()
+
+  useEffect(() => {
+    callApi()
+  }, [])
+
+  const callApi = async () => {
+    const {data}: any = await getGroup(props.data.idx)
+    setData(data)
+    const user = await AsyncStorage.getItem('user')
+    const jsonParser = user && (await JSON.parse(user))
+    setUser(jsonParser)
+    setLoading(false)
+  }
 
   const onPressDeleteBtn = async (idx: string) => {
     const {data}: any = await deleteGroupUser(idx)
@@ -75,21 +93,30 @@ const CalenderView = (props: any) => {
       marked: markedDates[selectedDate]?.marked,
     },
   }
-  console.log(props.data)
+
+  if (loading) return null
 
   return (
     <View>
       <View style={styles.lows}>
-        <Text style={styles.text}>{props.data.group.name}</Text>
+        <Text style={styles.text}>{data.name}</Text>
+        {user.madePerson && user.idx === data.madePerson.idx ? (
+          <TouchableOpacity
+            style={styles.btn}
+            onPress={() => onPressDeleteBtn(String(data.idx))}
+          >
+            <Text style={styles.btnText}>삭제</Text>
+          </TouchableOpacity>
+        ) : null}
         <TouchableOpacity
           style={styles.btn}
-          onPress={() => onPressDeleteBtn(String(props.data.idx))}
+          onPress={() => onPressDeleteBtn(String(data.idx))}
         >
           <Text style={styles.btnText}>삭제</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.btn}
-          onPress={() => onPressScheduler(props.data.idx)}
+          onPress={() => onPressScheduler(data.idx)}
         >
           <Text style={styles.btnText}>스케줄표</Text>
         </TouchableOpacity>
@@ -102,10 +129,10 @@ const CalenderView = (props: any) => {
               setSelectedDate(day.dateString)
             }}
             theme={{
-              selectedDayBackgroundColor: props.data.group.color,
-              arrowColor: props.data.group.color,
-              dotColor: props.data.group.color,
-              todayTextColor: props.data.group.color,
+              selectedDayBackgroundColor: data.color,
+              arrowColor: data.color,
+              dotColor: data.color,
+              todayTextColor: data.color,
             }}
             style={styles.calendar}
           />
