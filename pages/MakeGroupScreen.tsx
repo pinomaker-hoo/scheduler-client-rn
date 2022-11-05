@@ -50,11 +50,11 @@ export default function MakeGroupScreen({navigation}: any) {
         <RNPickerSelect
           onValueChange={value => setColor(value)}
           items={[
-            {label: 'BLUE', value: 'BLUE'},
-            {label: 'GREEN', value: 'GREEN'},
-            {label: 'RED', value: 'RED'},
-            {label: 'YELLOW', value: 'YELLOW'},
-            {label: 'ORANGE', value: 'ORANGE'},
+            {label: 'BLUE', value: 'blue'},
+            {label: 'GREEN', value: 'green'},
+            {label: 'RED', value: 'red'},
+            {label: 'YELLOW', value: 'yellow'},
+            {label: 'ORANGE', value: 'orange'},
           ]}
           placeholder="색상 선택"
         />
