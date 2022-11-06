@@ -7,6 +7,13 @@ const group = axios.create({
   withCredentials: true,
 })
 
+export const getGroupList = async () => {
+  return await group({
+    method: 'get',
+    url: '/',
+  })
+}
+
 export const saveGroup = async (
   name: string,
   password: string,
