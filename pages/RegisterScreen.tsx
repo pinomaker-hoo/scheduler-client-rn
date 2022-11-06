@@ -6,15 +6,19 @@ import {
   TouchableOpacity,
   Alert,
   View,
+  Image,
+  Button,
 } from 'react-native'
+import {launchImageLibrary} from 'react-native-image-picker'
 import {findUserById, register} from '../api/auth'
-import {nullCheck} from '../common/common'
+import {imgToBase64Code, nullCheck} from '../common/common'
 
 export default function RegisterScreen({navigation}: any) {
   const [name, setName] = useState('')
   const [id, setId] = useState('')
   const [password, setPassword] = useState('')
   const [passwordc, setPasswordc] = useState('')
+  const [photo, setPhoto]: any = useState(null)
 
   const onPressIdBtn = async () => {
     if (!nullCheck([id])) return Alert.alert('입력 해주세요.')
@@ -24,19 +28,37 @@ export default function RegisterScreen({navigation}: any) {
   }
 
   const onPressJoinBtn = async () => {
+    const base = await imgToBase64Code(photo.uri)
     if (!nullCheck([name, id, password, passwordc]))
       return Alert.alert('입력 해주세요.')
     if (password !== passwordc)
       return Alert.alert('비밀번호와 비밀번호 체크가 같지 않습니다.')
-    const {data} = await register(id, name, password)
+    const {data} = await register(id, name, password, base)
     if (!data) return Alert.alert('회원 가입 실패')
     Alert.alert('회원 가입 성공')
     navigation.navigate('Login')
   }
 
+  const handleChoosePhoto = () => {
+    launchImageLibrary({mediaType: 'photo'}, (response: any) => {
+      if (response) {
+        setPhoto(response.assets[0])
+      }
+    })
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.headerText}>SIGN UP</Text>
+      {photo ? (
+        <TouchableOpacity onPress={handleChoosePhoto}>
+          <Image style={styles.img} source={{uri: photo.uri}} />
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity onPress={handleChoosePhoto}>
+          <Image style={styles.img} source={require('../assets/user.png')} />
+        </TouchableOpacity>
+      )}
       <TextInput
         onChangeText={name => setName(name)}
         placeholder="name"
@@ -80,7 +102,7 @@ const styles = StyleSheet.create({
     width: 240,
     height: 45,
     backgroundColor: '#C47DFF',
-    marginBottom: 20,
+    marginTop: 20,
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
@@ -93,13 +115,19 @@ const styles = StyleSheet.create({
     width: 240,
     height: 45,
     backgroundColor: '#D9D9D9',
-    marginBottom: 20,
+    marginTop: 20,
     borderRadius: 10,
     padding: 10,
   },
   headerText: {
     fontSize: 30,
     color: '#C47DFF',
-    marginBottom: 30,
+  },
+  img: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    backgroundColor: '#E8E8E8',
+    marginTop: 30,
   },
 })

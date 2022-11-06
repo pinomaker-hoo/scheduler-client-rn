@@ -1,3 +1,5 @@
+import ImgToBase64 from 'react-native-image-base64'
+
 export const nullCheck = (arr: any[]) => {
   for (const item of arr) {
     if (!item) return false
@@ -15,4 +17,8 @@ export const formatDate = (date: Date) => {
     padTo2Digits(date.getMonth() + 1),
     padTo2Digits(date.getDate()),
   ].join('-')
+}
+
+export const imgToBase64Code = async (url: string) => {
+  return await ImgToBase64.getBase64String(url)
 }

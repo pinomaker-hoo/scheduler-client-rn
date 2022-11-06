@@ -19,12 +19,17 @@ export const login = async (id: string, password: string) => {
   }
 }
 
-export const register = async (id: string, name: string, password: string) => {
+export const register = async (
+  id: string,
+  name: string,
+  password: string,
+  base: string,
+) => {
   try {
     const {data} = await auth({
       url: '/',
       method: 'post',
-      data: {id, name, password},
+      data: {id, name, password, base},
     })
     return data
   } catch (err) {
