@@ -2,6 +2,7 @@ import {NavigationContainer} from '@react-navigation/native'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import BottomTabNavigator from './BottomNavigator'
 import DateScreen from './DateScreen'
+import GroupNewDoingScreen from './GroupNewDoingScreen'
 import LoginScreen from './LoginScreen'
 import MakeGroupScreen from './MakeGroupScreen'
 import MoneyScreen from './MoneyScreen'
@@ -59,6 +60,11 @@ export default function RootNavigator() {
         <Stack.Screen
           name="UpdateGroup"
           component={UpdateGroup}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="GroupNewDo"
+          component={GroupNewDoingScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>
