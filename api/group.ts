@@ -52,6 +52,7 @@ export const getGroup = async (idx: string) => {
 
 export const deleteGroup = async (idx: string) => {
   try {
+    console.log(idx)
     return await group({
       url: `/${idx}`,
       method: 'delete',

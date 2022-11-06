@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import {getGroup, saveGroup, updateGroup} from '../api/group'
+import {deleteGroup, getGroup, saveGroup, updateGroup} from '../api/group'
 import {joinGroup} from '../api/groupUser'
 import {nullCheck} from '../common/common'
 import RNPickerSelect from 'react-native-picker-select'
@@ -49,7 +49,12 @@ export default function UpdateGroup(props: any) {
 
   const onPressAddTodos = async () => {}
 
-  const onPressDeleteGroup = async () => {}
+  const onPressDeleteGroup = async () => {
+    const {data}: any = await deleteGroup(props.route.params.state)
+    if (!data) return Alert.alert('ERROR')
+    Alert.alert('삭제하였습니다.')
+    return props.navigation.navigate('그룹')
+  }
 
   if (loading) return null
   return (
