@@ -7,7 +7,7 @@ const groupTodos = axios.create({
   withCredentials: true,
 })
 
-export const getTodosList = async (idx: string) => {
+export const getGroupTodosList = async (idx: string) => {
   return await groupTodos({
     method: 'get',
     url: `/${idx}`,

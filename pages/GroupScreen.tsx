@@ -10,7 +10,7 @@ import {
 } from 'react-native'
 import {Calendar} from 'react-native-calendars'
 import {getGroup} from '../api/group'
-import {getTodosList} from '../api/groupTodos'
+import {getGroupTodosList} from '../api/groupTodos'
 import {deleteGroupUser, findGroupUser} from '../api/groupUser'
 import {formatDate} from '../common/common'
 import constants from '../common/constant'
@@ -65,6 +65,8 @@ const CalenderView = (props: any) => {
 
   const callApi = async () => {
     const {data}: any = await getGroup(props.data.group.idx)
+    const {data: todoData} = await getGroupTodosList(props.data.group.idx)
+    setSchedulerData(todoData)
     setData(data)
     const user = await AsyncStorage.getItem('user')
     const jsonParser = user && (await JSON.parse(user))
@@ -84,8 +86,6 @@ const CalenderView = (props: any) => {
   }
 
   const onPressScheduler = async (idx: number) => {
-    const {data} = await getTodosList(String(idx))
-    setSchedulerData(() => data)
     setToggled(current => !current)
   }
 
