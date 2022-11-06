@@ -30,6 +30,7 @@ export default function GroupScreen() {
   }
 
   if (loading) return null
+  console.log(dataList)
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -95,7 +96,7 @@ const CalenderView = (props: any) => {
   }
 
   if (loading) return null
-
+  console.log(data)
   return (
     <View>
       <View style={styles.lows}>
