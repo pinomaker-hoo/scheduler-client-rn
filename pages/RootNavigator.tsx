@@ -7,6 +7,7 @@ import MakeGroupScreen from './MakeGroupScreen'
 import MoneyScreen from './MoneyScreen'
 import NewDoingScreen from './NewDoingScreen'
 import RegisterScreen from './RegisterScreen'
+import UpdateGroup from './UpdateGroup'
 import UpdateInfoScreen from './UpdateInfoScreen'
 
 const Stack = createNativeStackNavigator()
@@ -53,6 +54,11 @@ export default function RootNavigator() {
         <Stack.Screen
           name="NewDo"
           component={NewDoingScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="UpdateGroup"
+          component={UpdateGroup}
           options={{headerShown: false}}
         />
       </Stack.Navigator>
