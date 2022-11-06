@@ -1,14 +1,17 @@
 import React, {useEffect, useState} from 'react'
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function AdminScreen({navigation}: any) {
   const [name, setName] = useState('')
+  const [photo, setPhoto]: any = useState(null)
+
   useEffect(() => {
     AsyncStorage.getItem('user').then(user => {
       if (user) setName(JSON.parse(user).name)
     })
   }, [])
+
   const onPressUpdate = () => {
     navigation.navigate('Update')
   }
@@ -28,23 +31,24 @@ export default function AdminScreen({navigation}: any) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.nameText}>{name}</Text>
-        <TouchableOpacity style={styles.headerBtn} onPress={onPressLogout}>
-          <Text>로그아웃</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.headerBtn} onPress={onPressUpdate}>
-          <Text>수정</Text>
-        </TouchableOpacity>
-      </View>
       <View style={styles.body}>
-        <Text style={styles.bodyText}>2002.06.13</Text>
-        <Text style={styles.bodyText}>이달의 월급 xx원</Text>
-        <TouchableOpacity style={styles.bodyBtn} onPress={onPressMoney}>
-          <Text>임금 확인</Text>
+        {photo ? (
+          <Image style={styles.img} source={{uri: photo.uri}} />
+        ) : (
+          <Image style={styles.img} source={require('../assets/user.png')} />
+        )}
+        <Text style={styles.bodyText}>김도연</Text>
+        <TouchableOpacity style={styles.bodyBtn} onPress={onPressUpdate}>
+          <Text style={styles.bodyBtnText}>계정 설정</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.bodyBtn} onPress={onPressDate}>
-          <Text>디데이 설정</Text>
+          <Text style={styles.bodyBtnText}>디데이 설정</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.bodyBtn} onPress={onPressMoney}>
+          <Text style={styles.bodyBtnText}>임금 확인</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.bodyBtn} onPress={onPressLogout}>
+          <Text style={styles.bodyBtnText}>로그아웃</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -85,11 +89,22 @@ const styles = StyleSheet.create({
     fontSize: 30,
   },
   bodyBtn: {
-    width: 70,
-    height: 40,
-    backgroundColor: '#D9D9D9',
+    width: 150,
+    height: 50,
+    borderRadius: 10,
+    backgroundColor: '#C47DFF',
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 30,
+  },
+  img: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: '#E8E8E8',
+    marginTop: 200,
+  },
+  bodyBtnText: {
+    color: 'white',
   },
 })
