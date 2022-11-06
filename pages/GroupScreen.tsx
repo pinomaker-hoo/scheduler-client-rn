@@ -15,7 +15,7 @@ import {deleteGroupUser, findGroupUser} from '../api/groupUser'
 import {formatDate} from '../common/common'
 import constants from '../common/constant'
 
-export default function GroupScreen() {
+export default function GroupScreen({navigation}: any) {
   const [dataList, setDataList] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -29,8 +29,11 @@ export default function GroupScreen() {
     setLoading(false)
   }
 
+  const moveToUpdate = (page: string, idx: string) => {
+    navigation.navigate(page, {state: idx})
+  }
+
   if (loading) return null
-  console.log(dataList)
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -39,7 +42,7 @@ export default function GroupScreen() {
       <View style={styles.body}>
         <ScrollView>
           {dataList.map((item: any) => (
-            <CalenderView key={item.idx} data={item} />
+            <CalenderView key={item.idx} data={item} func={moveToUpdate} />
           ))}
         </ScrollView>
       </View>
@@ -60,7 +63,7 @@ const CalenderView = (props: any) => {
   }, [])
 
   const callApi = async () => {
-    const {data}: any = await getGroup(props.data.idx)
+    const {data}: any = await getGroup(props.data.group.idx)
     setData(data)
     const user = await AsyncStorage.getItem('user')
     const jsonParser = user && (await JSON.parse(user))
@@ -73,6 +76,10 @@ const CalenderView = (props: any) => {
     console.log(data)
     if (data) return Alert.alert('삭제 완료')
     return Alert.alert('ERROR')
+  }
+
+  const onPressUpdateBtn = async () => {
+    props.func('UpdateGroup', data.idx)
   }
 
   const onPressScheduler = async (idx: number) => {
@@ -96,17 +103,13 @@ const CalenderView = (props: any) => {
   }
 
   if (loading) return null
-  console.log(data)
   return (
     <View>
       <View style={styles.lows}>
         <Text style={styles.text}>{data.name}</Text>
-        {user.madePerson && user.idx === data.madePerson.idx ? (
-          <TouchableOpacity
-            style={styles.btn}
-            onPress={() => onPressDeleteBtn(String(data.idx))}
-          >
-            <Text style={styles.btnText}>삭제</Text>
+        {user.idx && user.idx === data.madePerson.idx ? (
+          <TouchableOpacity style={styles.btn} onPress={onPressUpdateBtn}>
+            <Text style={styles.btnText}>수정</Text>
           </TouchableOpacity>
         ) : null}
         <TouchableOpacity
@@ -170,7 +173,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 18,
     marginLeft: 20,
-    width: constants.width - 200,
+    width: constants.width - 250,
   },
   btn: {
     width: 50,
