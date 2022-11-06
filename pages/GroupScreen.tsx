@@ -34,6 +34,7 @@ export default function GroupScreen({navigation}: any) {
   }
 
   if (loading) return null
+  console.log(dataList)
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -71,8 +72,8 @@ const CalenderView = (props: any) => {
     setLoading(false)
   }
 
-  const onPressDeleteBtn = async (idx: string) => {
-    const {data}: any = await deleteGroupUser(idx)
+  const onPressDeleteBtn = async () => {
+    const {data}: any = await deleteGroupUser(props.data.group.idx)
     console.log(data)
     if (data) return Alert.alert('삭제 완료')
     return Alert.alert('ERROR')
@@ -112,11 +113,8 @@ const CalenderView = (props: any) => {
             <Text style={styles.btnText}>수정</Text>
           </TouchableOpacity>
         ) : null}
-        <TouchableOpacity
-          style={styles.btn}
-          onPress={() => onPressDeleteBtn(String(data.idx))}
-        >
-          <Text style={styles.btnText}>삭제</Text>
+        <TouchableOpacity style={styles.btn} onPress={onPressDeleteBtn}>
+          <Text style={styles.btnText}>탈퇴</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.btn}

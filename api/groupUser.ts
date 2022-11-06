@@ -40,9 +40,14 @@ export const findGroupUser = async () => {
 
 export const deleteGroupUser = async (idx: string) => {
   try {
+    const token = await AsyncStorage.getItem('accesstoken')
+    const jsonParser = token && (await JSON.parse(token))
     return await groupUser({
       url: `/${idx}`,
       method: 'delete',
+      headers: {
+        accesstoken: jsonParser,
+      },
     })
   } catch (err) {
     console.log(err)
