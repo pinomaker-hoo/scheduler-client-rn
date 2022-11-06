@@ -47,7 +47,9 @@ export default function UpdateGroup(props: any) {
     return Alert.alert('ERROR')
   }
 
-  const onPressAddTodos = async () => {}
+  const onPressAddTodos = async () => {
+    props.navigation.navigate('GroupNewDo', {state: props.route.params.state})
+  }
 
   const onPressDeleteGroup = async () => {
     const {data}: any = await deleteGroup(props.route.params.state)

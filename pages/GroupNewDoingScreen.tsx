@@ -8,10 +8,10 @@ import {
   Alert,
 } from 'react-native'
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
-import {saveTodos} from '../api/todos'
+import {saveGroupTodos} from '../api/groupTodos'
 import {formatDate} from '../common/common'
 
-export default function GroupNewDoingScreen({navigation}: any) {
+export default function GroupNewDoingScreen(props: any) {
   const [title, setTitle] = useState('')
   const [place, setPlace] = useState('')
   const [date, setDate] = useState('')
@@ -32,9 +32,14 @@ export default function GroupNewDoingScreen({navigation}: any) {
 
   const onPressAddBtn = async () => {
     try {
-      const {data} = await saveTodos(date, place, title)
+      const {data} = await saveGroupTodos(
+        date,
+        place,
+        title,
+        props.route.params.state,
+      )
       if (!data) return Alert.alert('ERROR 발생')
-      navigation.navigate('Root')
+      props.navigation.navigate('Root')
     } catch (err) {
       console.log(err)
     }
