@@ -11,7 +11,7 @@ export const saveDay = async (name?: string, date?: string) => {
   try {
     const token = await AsyncStorage.getItem('accesstoken')
     const jsonParser = token && (await JSON.parse(token))
-    return await day({
+    const {data} = await day({
       url: '',
       method: 'post',
       data: {
@@ -22,6 +22,7 @@ export const saveDay = async (name?: string, date?: string) => {
         accesstoken: jsonParser,
       },
     })
+    return data
   } catch (err) {
     console.log(err)
   }
@@ -31,13 +32,14 @@ export const getDay = async () => {
   try {
     const token = await AsyncStorage.getItem('accesstoken')
     const jsonParser = token && (await JSON.parse(token))
-    return await day({
+    const {data} = await day({
       url: '/',
       method: 'get',
       headers: {
         accesstoken: jsonParser,
       },
     })
+    return data
   } catch (err) {
     console.log(err)
   }
