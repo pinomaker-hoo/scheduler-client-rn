@@ -8,10 +8,15 @@ const group = axios.create({
 })
 
 export const getGroupList = async () => {
-  return await group({
-    method: 'get',
-    url: '/',
-  })
+  try {
+    const {data} = await group({
+      method: 'get',
+      url: '/',
+    })
+    return data
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 export const saveGroup = async (
@@ -20,16 +25,21 @@ export const saveGroup = async (
   memberCount: number,
   color: string,
 ) => {
-  const token = await AsyncStorage.getItem('accesstoken')
-  const jsonParser = token && (await JSON.parse(token))
-  return await group({
-    method: 'post',
-    url: '/',
-    data: {name, password, memberCount, color},
-    headers: {
-      accesstoken: jsonParser,
-    },
-  })
+  try {
+    const token = await AsyncStorage.getItem('accesstoken')
+    const jsonParser = token && (await JSON.parse(token))
+    const {data} = await group({
+      method: 'post',
+      url: '/',
+      data: {name, password, memberCount, color},
+      headers: {
+        accesstoken: jsonParser,
+      },
+    })
+    return data
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 export const updateGroup = async (
@@ -39,19 +49,25 @@ export const updateGroup = async (
   color: string,
   idx: string,
 ) => {
-  return await group({
-    method: 'put',
-    url: `/${idx}`,
-    data: {name, password, memberCount, color},
-  })
+  try {
+    const {data} = await group({
+      method: 'put',
+      url: `/${idx}`,
+      data: {name, password, memberCount, color},
+    })
+    return data
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 export const getGroup = async (idx: string) => {
   try {
-    return await group({
+    const {data} = await group({
       url: `/${idx}`,
       method: 'get',
     })
+    return data
   } catch (err) {
     console.log(err)
   }
