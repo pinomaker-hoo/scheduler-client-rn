@@ -7,12 +7,15 @@ const auth = axios.create({
 })
 
 export const login = async (id: string, password: string) => {
-  console.log(id, password)
-  return await auth({
-    url: '/local',
-    method: 'post',
-    data: {id, password},
-  })
+  try {
+    return await auth({
+      url: '/local',
+      method: 'post',
+      data: {id, password},
+    })
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 export const register = async (id: string, name: string, password: string) => {

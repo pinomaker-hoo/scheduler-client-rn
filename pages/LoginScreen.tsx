@@ -23,7 +23,7 @@ export default function LoginScreen({navigation}: any) {
   const opPressLoginBtn = async () => {
     try {
       if (!nullCheck([id, password])) return Alert.alert('입력 해주세요.')
-      const {data} = await login(id, password)
+      const {data}: any = await login(id, password)
       if (!data) return Alert.alert('로그인 실패')
       await AsyncStorage.setItem('accesstoken', JSON.stringify(data.token))
       await AsyncStorage.setItem('user', JSON.stringify(data.user))
