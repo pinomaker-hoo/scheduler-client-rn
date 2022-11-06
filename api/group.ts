@@ -25,6 +25,20 @@ export const saveGroup = async (
   })
 }
 
+export const updateGroup = async (
+  name: string,
+  password: string,
+  memberCount: number,
+  color: string,
+  idx: string,
+) => {
+  return await group({
+    method: 'put',
+    url: `/${idx}`,
+    data: {name, password, memberCount, color},
+  })
+}
+
 export const getGroup = async (idx: string) => {
   try {
     return await group({
