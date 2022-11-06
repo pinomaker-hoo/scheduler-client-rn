@@ -8,10 +8,15 @@ const groupTodos = axios.create({
 })
 
 export const getGroupTodosList = async (idx: string) => {
-  return await groupTodos({
-    method: 'get',
-    url: `/${idx}`,
-  })
+  try {
+    const {data} = await groupTodos({
+      method: 'get',
+      url: `/${idx}`,
+    })
+    return data
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 export const saveGroupTodos = async (
@@ -20,14 +25,19 @@ export const saveGroupTodos = async (
   title: string,
   idx: string,
 ) => {
-  const token = await AsyncStorage.getItem('accesstoken')
-  const jsonParser = token && (await JSON.parse(token))
-  return await groupTodos({
-    method: 'post',
-    url: `/${idx}`,
-    data: {date, place, title},
-    headers: {
-      accesstoken: jsonParser,
-    },
-  })
+  try {
+    const token = await AsyncStorage.getItem('accesstoken')
+    const jsonParser = token && (await JSON.parse(token))
+    const {data} = await groupTodos({
+      method: 'post',
+      url: `/${idx}`,
+      data: {date, place, title},
+      headers: {
+        accesstoken: jsonParser,
+      },
+    })
+    return data
+  } catch (err) {
+    console.log(err)
+  }
 }
