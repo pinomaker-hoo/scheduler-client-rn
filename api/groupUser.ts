@@ -9,16 +9,17 @@ const groupUser = axios.create({
 })
 
 export const joinGroup = async (idx: number) => {
-  const token = await AsyncStorage.getItem('accesstoken')
-  const jsonParser = token && (await JSON.parse(token))
   try {
-    return await groupUser({
+    const token = await AsyncStorage.getItem('accesstoken')
+    const jsonParser = token && (await JSON.parse(token))
+    const {data} = await groupUser({
       method: 'post',
       url: `/${String(idx)}`,
       headers: {
         accesstoken: jsonParser,
       },
     })
+    return data
   } catch (err) {
     console.log(err)
     Alert.alert('ERROR')
@@ -27,15 +28,20 @@ export const joinGroup = async (idx: number) => {
 }
 
 export const findGroupUser = async () => {
-  const token = await AsyncStorage.getItem('accesstoken')
-  const jsonParser = token && (await JSON.parse(token))
-  return await groupUser({
-    method: 'get',
-    url: '/',
-    headers: {
-      accesstoken: jsonParser,
-    },
-  })
+  try {
+    const token = await AsyncStorage.getItem('accesstoken')
+    const jsonParser = token && (await JSON.parse(token))
+    const {data} = await groupUser({
+      method: 'get',
+      url: '/',
+      headers: {
+        accesstoken: jsonParser,
+      },
+    })
+    return data
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 export const deleteGroupUser = async (idx: string) => {
