@@ -16,16 +16,18 @@ import {formatDate} from '../common/common'
 import constants from '../common/constant'
 
 export default function GroupScreen({navigation}: any) {
-  const [dataList, setDataList] = useState([])
   const [loading, setLoading] = useState(true)
+  const [dataList, setDataList]: any = useState([])
 
   useEffect(() => {
     callApi()
   }, [])
 
   const callApi = async () => {
-    const {data} = await findGroupUser()
+    const {data}: any = await findGroupUser()
+
     setDataList(data)
+
     setLoading(false)
   }
 
@@ -34,7 +36,6 @@ export default function GroupScreen({navigation}: any) {
   }
 
   if (loading) return null
-  console.log(dataList)
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -153,6 +154,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   headerText: {
+    marginLeft: 20,
+    marginTop: 20,
     fontSize: 30,
   },
   body: {
@@ -187,5 +190,14 @@ const styles = StyleSheet.create({
   calendar: {
     borderBottomWidth: 1,
     borderBottomColor: '#e0e0e0',
+  },
+  select: {
+    width: 240,
+    height: 45,
+    backgroundColor: '#D9D9D9',
+    marginBottom: 20,
+    borderRadius: 10,
+    paddingLeft: 10,
+    justifyContent: 'center',
   },
 })
