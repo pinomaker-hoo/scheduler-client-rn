@@ -1,5 +1,6 @@
 'use strict'
 import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const auth = axios.create({
   baseURL: 'http://localhost:3020/auth',
@@ -44,6 +45,59 @@ export const findUserById = async (id: string) => {
       url: '/check',
       data: {
         id,
+      },
+    })
+    return data
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export const updateImg = async (base: string) => {
+  try {
+    const token = await AsyncStorage.getItem('accesstoken')
+    const jsonParser = token && (await JSON.parse(token))
+    const {data} = await auth({
+      method: 'patch',
+      url: '/image',
+      data: {base},
+      headers: {
+        accesstoken: jsonParser,
+      },
+    })
+    return data
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export const updatePassword = async (password: string) => {
+  try {
+    const token = await AsyncStorage.getItem('accesstoken')
+    const jsonParser = token && (await JSON.parse(token))
+    const {data} = await auth({
+      method: 'patch',
+      url: '/',
+      data: {password},
+      headers: {
+        accesstoken: jsonParser,
+      },
+    })
+    return data
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export const deleteUser = async () => {
+  try {
+    const token = await AsyncStorage.getItem('accesstoken')
+    const jsonParser = token && (await JSON.parse(token))
+    const {data} = await auth({
+      method: 'delete',
+      url: '/',
+      headers: {
+        accesstoken: jsonParser,
       },
     })
     return data
