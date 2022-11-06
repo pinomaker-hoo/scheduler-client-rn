@@ -53,8 +53,8 @@ export default function MakeGroupScreen({navigation}: any) {
             {label: 'BLUE', value: 'blue'},
             {label: 'GREEN', value: 'green'},
             {label: 'RED', value: 'red'},
-            {label: 'YELLOW', value: 'yellow'},
-            {label: 'ORANGE', value: 'orange'},
+            {label: 'YELLOW', value: '#E9FF52'},
+            {label: 'ORANGE', value: '#E99C52'},
           ]}
           placeholder="색상 선택"
         />
