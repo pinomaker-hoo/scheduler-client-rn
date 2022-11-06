@@ -2,13 +2,13 @@ import React, {useEffect, useState} from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {
   Alert,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native'
-// import {getGroupList} from '../api/group'
 import {joinGroup} from '../api/groupUser'
 import constant from '../common/constant'
 import {getGroupList} from '../api/group'
@@ -74,23 +74,32 @@ export default function SearchScreen({navigation}: any) {
         </TouchableOpacity>
       </View>
       <View style={styles.body}>
-        {dataList
-          .filter((item: any) => item.madePerson.idx !== user.idx)
-          .filter((item: any) => item.name.includes(keyword))
-          .map((item: any) => (
-            <View style={styles.rows} key={item.idx}>
-              <Text style={styles.text}>{item.name}</Text>
-              <Text style={styles.text}>{item.madePerson.name}</Text>
-              <Text style={styles.text}>{item.memberCount}</Text>
-              <Text style={styles.text}>잠김</Text>
-              <TouchableOpacity
-                style={styles.rowsBtn}
-                onPress={() => onPressBtn(item.password, item.idx)}
-              >
-                <Text style={styles.btnText}>입장</Text>
-              </TouchableOpacity>
-            </View>
-          ))}
+        <View style={styles.rows1}>
+          <Text style={styles.text}>그룹 이름</Text>
+          <Text style={styles.text}>방장 이름</Text>
+          <Text style={styles.text}>인원</Text>
+          <Text style={styles.text}>잠김</Text>
+          <View style={styles.rowsBtn1}></View>
+        </View>
+        <ScrollView>
+          {dataList
+            .filter((item: any) => item.madePerson.idx !== user.idx)
+            .filter((item: any) => item.name.includes(keyword))
+            .map((item: any) => (
+              <View style={styles.rows} key={item.idx}>
+                <Text style={styles.text}>{item.name}</Text>
+                <Text style={styles.text}>{item.madePerson.name}</Text>
+                <Text style={styles.text}>{item.memberCount}</Text>
+                <Text style={styles.text}>잠김</Text>
+                <TouchableOpacity
+                  style={styles.rowsBtn}
+                  onPress={() => onPressBtn(item.password, item.idx)}
+                >
+                  <Text style={styles.btnText}>입장</Text>
+                </TouchableOpacity>
+              </View>
+            ))}
+        </ScrollView>
       </View>
     </View>
   )
@@ -141,8 +150,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  rows1: {
+    width: constant.width,
+    backgroundColor: '#CDCDDF',
+    height: constant.height / 13,
+    borderWidth: 1,
+    marginBottom: -1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   text: {
-    marginRight: 20,
+    flex: 1,
   },
   rowsBtn: {
     width: 30,
@@ -151,6 +170,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#A59CB5',
     alignItems: 'center',
     justifyContent: 'center',
+    marginLeft: 20,
+  },
+  rowsBtn1: {
+    width: 30,
+    height: 20,
     marginLeft: 20,
   },
   btnText: {

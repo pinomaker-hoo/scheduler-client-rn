@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
   },
   bodyBtn: {
-    width: 60,
+    width: 70,
     height: 40,
     backgroundColor: '#D9D9D9',
     alignItems: 'center',

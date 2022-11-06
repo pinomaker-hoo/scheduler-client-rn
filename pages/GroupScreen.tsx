@@ -55,7 +55,7 @@ export default function GroupScreen({navigation}: any) {
 const CalenderView = (props: any) => {
   const [selectedDate, setSelectedDate] = useState(formatDate(new Date()))
   const [schedulerData, setSchedulerData] = useState([])
-  const [toggled, setToggled] = useState(true)
+  const [toggled, setToggled] = useState(false)
   const [data, setData]: any = useState()
   const [loading, setLoading] = useState(true)
   const [user, setUser]: any = useState()
