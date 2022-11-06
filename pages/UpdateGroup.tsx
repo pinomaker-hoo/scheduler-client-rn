@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import {getGroup, saveGroup} from '../api/group'
+import {getGroup, saveGroup, updateGroup} from '../api/group'
 import {joinGroup} from '../api/groupUser'
 import {nullCheck} from '../common/common'
 import RNPickerSelect from 'react-native-picker-select'
@@ -26,16 +26,24 @@ export default function UpdateGroup(props: any) {
 
   const callApi = async () => {
     const {data}: any = await getGroup(props.route.params.state)
-    setData(data)
+    setName(data.name)
+    setPassword(data.password)
+    setColor(data.color)
+    setMemberCount(data.memberCount)
     setLoading(false)
   }
 
   const onPressUpdate = async () => {
     if (!nullCheck([name, password, memberCount, color]))
       return Alert.alert('입력 하세요.')
-    const {data} = await saveGroup(name, password, Number(memberCount), color)
-    const {data: data2}: any = await joinGroup(data.idx)
-    if (data2) return props.navigation.navigate('Root')
+    const {data} = await updateGroup(
+      name,
+      password,
+      Number(memberCount),
+      color,
+      props.route.params.state,
+    )
+    if (data) return props.navigation.navigate('그룹')
     return Alert.alert('ERROR')
   }
 
@@ -44,29 +52,28 @@ export default function UpdateGroup(props: any) {
   const onPressDeleteGroup = async () => {}
 
   if (loading) return null
-  console.log(data.memberCount)
   return (
     <View style={styles.container}>
       <Text style={styles.headerText}>그룹 설정</Text>
       <TextInput
         onChangeText={name => setName(name)}
-        value={data.name}
+        value={name}
         style={styles.textInput}
       />
       <TextInput
         onChangeText={password => setPassword(password)}
-        value={data.password}
+        value={password}
         secureTextEntry={true}
         style={styles.textInput}
       />
       <TextInput
         onChangeText={memberCount => setMemberCount(memberCount)}
-        value={String(data.memberCount)}
+        value={String(memberCount)}
         style={styles.textInput}
       />
       <View style={styles.select}>
         <RNPickerSelect
-          value={data.color}
+          value={color}
           onValueChange={value => setColor(value)}
           items={[
             {label: 'BLUE', value: 'blue'},
