@@ -25,23 +25,22 @@ export const saveGroup = async (
   })
 }
 
-export const getGroupList = async () => {
-  const token = await AsyncStorage.getItem('accesstoken')
-  const jsonParser = token && (await JSON.parse(token))
-  return await group({
-    method: 'get',
-    url: '/',
-    headers: {
-      accesstoken: jsonParser,
-    },
-  })
-}
-
 export const getGroup = async (idx: string) => {
   try {
     return await group({
       url: `/${idx}`,
       method: 'get',
+    })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export const deleteGroup = async (idx: string) => {
+  try {
+    return await group({
+      url: `/${idx}`,
+      method: 'delete',
     })
   } catch (err) {
     console.log(err)
