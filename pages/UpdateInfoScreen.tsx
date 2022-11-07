@@ -15,7 +15,8 @@ import {deleteUser, updateImg, updatePassword} from '../api/auth'
 
 export default function UpdateInfoScreen({navigation}: any) {
   const [photo, setPhoto]: any = useState(null)
-  const [user, setUser] = useState()
+  const [user, setUser]: any = useState()
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     callApi()
@@ -25,6 +26,7 @@ export default function UpdateInfoScreen({navigation}: any) {
     const user = await AsyncStorage.getItem('user')
     const jsonParser = user && (await JSON.parse(user))
     setUser(jsonParser)
+    setLoading(false)
   }
 
   const handleChoosePhoto = () => {
@@ -77,7 +79,6 @@ export default function UpdateInfoScreen({navigation}: any) {
   const updatePasswordFunc = (value: string) => {
     console.log(value)
     const res: any = updatePassword(value)
-
     if (!res) return Alert.alert('ERROR')
     return navigation.navigate('개인')
   }
@@ -87,6 +88,7 @@ export default function UpdateInfoScreen({navigation}: any) {
     navigation.navigate('Login')
   }
 
+  if (loading) return null
   return (
     <View style={styles.container}>
       <Text style={styles.headerText}>내 프로필</Text>
@@ -96,7 +98,10 @@ export default function UpdateInfoScreen({navigation}: any) {
         </TouchableOpacity>
       ) : (
         <TouchableOpacity onPress={handleChoosePhoto}>
-          <Image style={styles.img} source={require('../assets/user.png')} />
+          <Image
+            style={styles.img}
+            source={{uri: `http://localhost:3020${user.image.substr(1)}.jpg`}}
+          />
         </TouchableOpacity>
       )}
       <Text style={styles.bodyText}>김도연</Text>

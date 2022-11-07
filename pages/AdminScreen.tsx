@@ -3,14 +3,19 @@ import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function AdminScreen({navigation}: any) {
-  const [name, setName] = useState('')
-  const [photo, setPhoto]: any = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [user, setUser]: any = useState()
 
   useEffect(() => {
-    AsyncStorage.getItem('user').then(user => {
-      if (user) setName(JSON.parse(user).name)
-    })
+    callApi()
   }, [])
+
+  const callApi = async () => {
+    const user = await AsyncStorage.getItem('user')
+    const jsonParser = user && (await JSON.parse(user))
+    setUser(jsonParser)
+    setLoading(false)
+  }
 
   const onPressUpdate = () => {
     navigation.navigate('Update')
@@ -29,15 +34,19 @@ export default function AdminScreen({navigation}: any) {
     navigation.navigate('Login')
   }
 
+  if (loading) return null
   return (
     <View style={styles.container}>
       <View style={styles.body}>
-        {photo ? (
-          <Image style={styles.img} source={{uri: photo.uri}} />
+        {user.image ? (
+          <Image
+            style={styles.img}
+            source={{uri: `http://localhost:3020${user.image.substr(1)}.jpg`}}
+          />
         ) : (
           <Image style={styles.img} source={require('../assets/user.png')} />
         )}
-        <Text style={styles.bodyText}>김도연</Text>
+        <Text style={styles.bodyText}>{user.name}</Text>
         <TouchableOpacity style={styles.bodyBtn} onPress={onPressUpdate}>
           <Text style={styles.bodyBtnText}>계정 설정</Text>
         </TouchableOpacity>
@@ -102,7 +111,7 @@ const styles = StyleSheet.create({
     height: 120,
     borderRadius: 60,
     backgroundColor: '#E8E8E8',
-    marginTop: 200,
+    marginTop: 150,
   },
   bodyBtnText: {
     color: 'white',
