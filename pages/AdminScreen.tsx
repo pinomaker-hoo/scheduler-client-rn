@@ -31,6 +31,7 @@ export default function AdminScreen({navigation}: any) {
 
   const onPressLogout = async () => {
     await AsyncStorage.removeItem('accesstoken')
+    await AsyncStorage.removeItem('user')
     navigation.navigate('Login')
   }
 

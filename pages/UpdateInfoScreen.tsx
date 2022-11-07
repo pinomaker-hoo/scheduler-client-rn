@@ -41,7 +41,7 @@ export default function UpdateInfoScreen({navigation}: any) {
     const base = await imgToBase64Code(photo.uri)
     const {data}: any = await updateImg(base)
     if (!data) return Alert.alert('ERROR')
-    navigation.navigate('메인')
+    return LogoutFunc()
   }
 
   const onPressChangePassword = () => {
@@ -80,11 +80,12 @@ export default function UpdateInfoScreen({navigation}: any) {
     console.log(value)
     const res: any = updatePassword(value)
     if (!res) return Alert.alert('ERROR')
-    return navigation.navigate('개인')
+    return LogoutFunc()
   }
 
   const LogoutFunc = async () => {
     await AsyncStorage.removeItem('accesstoken')
+    await AsyncStorage.removeItem('user')
     navigation.navigate('Login')
   }
 
