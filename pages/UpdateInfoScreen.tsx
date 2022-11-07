@@ -76,8 +76,9 @@ export default function UpdateInfoScreen({navigation}: any) {
 
   const updatePasswordFunc = (value: string) => {
     console.log(value)
-    const {data}: any = updatePassword(value)
-    if (!data) return Alert.alert('ERROR')
+    const res: any = updatePassword(value)
+
+    if (!res) return Alert.alert('ERROR')
     return navigation.navigate('개인')
   }
 
