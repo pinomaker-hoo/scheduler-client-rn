@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native'
 import {Calendar} from 'react-native-calendars'
-import {getGroup} from '../api/group'
+import {getGroup, getGroupList} from '../api/group'
 import {getGroupTodosList} from '../api/groupTodos'
 import {deleteGroupUser, findGroupUser} from '../api/groupUser'
 import {formatDate} from '../common/common'
@@ -19,6 +19,8 @@ import constant from '../common/constant'
 export default function GroupScreen({navigation}: any) {
   const [loading, setLoading] = useState(true)
   const [dataList, setDataList]: any = useState([])
+  const [groupList, setGroupList]: any = useState([])
+  const [user, setUser]: any = useState()
 
   useEffect(() => {
     callApi()
@@ -26,9 +28,12 @@ export default function GroupScreen({navigation}: any) {
 
   const callApi = async () => {
     const {data}: any = await findGroupUser()
-
+    const {data: data2}: any = await getGroupList()
+    const user = await AsyncStorage.getItem('user')
+    const jsonParser = user && (await JSON.parse(user))
+    setUser(jsonParser)
+    setGroupList(data2)
     setDataList(data)
-
     setLoading(false)
   }
 
@@ -37,7 +42,6 @@ export default function GroupScreen({navigation}: any) {
   }
 
   if (loading) return null
-  console.log(dataList)
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -45,9 +49,16 @@ export default function GroupScreen({navigation}: any) {
       </View>
       <View style={styles.body}>
         <ScrollView>
-          {dataList.map((item: any) => (
-            <CalenderView key={item.idx} data={item} func={moveToUpdate} />
-          ))}
+          {dataList
+            .filter((item: any) => item.group.madePersonIdx === user.idx)
+            .map((item: any) => (
+              <CalenderView key={item.idx} data={item} func={moveToUpdate} />
+            ))}
+          {dataList
+            .filter((item: any) => item.group.madePersonIdx !== user.idx)
+            .map((item: any) => (
+              <CalenderView key={item.idx} data={item} func={moveToUpdate} />
+            ))}
         </ScrollView>
       </View>
     </View>
