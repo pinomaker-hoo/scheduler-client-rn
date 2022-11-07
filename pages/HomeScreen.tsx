@@ -47,7 +47,7 @@ export default function HomeScreen({navigation}: any) {
       marked: markedDates[selectedDate]?.marked,
     },
   }
-  
+
   const getDday = (dateData: string) => {
     const now = new Date()
     const dday = new Date(dateData)

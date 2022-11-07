@@ -14,6 +14,7 @@ import {getGroupTodosList} from '../api/groupTodos'
 import {deleteGroupUser, findGroupUser} from '../api/groupUser'
 import {formatDate} from '../common/common'
 import constants from '../common/constant'
+import constant from '../common/constant'
 
 export default function GroupScreen({navigation}: any) {
   const [loading, setLoading] = useState(true)
@@ -36,6 +37,7 @@ export default function GroupScreen({navigation}: any) {
   }
 
   if (loading) return null
+  console.log(dataList)
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -126,19 +128,30 @@ const CalenderView = (props: any) => {
       </View>
       <View>
         {toggled ? (
-          <Calendar
-            markedDates={markedSelectedDates}
-            onDayPress={day => {
-              setSelectedDate(day.dateString)
-            }}
-            theme={{
-              selectedDayBackgroundColor: data.color,
-              arrowColor: data.color,
-              dotColor: data.color,
-              todayTextColor: data.color,
-            }}
-            style={styles.calendar}
-          />
+          <>
+            <Calendar
+              markedDates={markedSelectedDates}
+              onDayPress={day => {
+                setSelectedDate(day.dateString)
+              }}
+              theme={{
+                selectedDayBackgroundColor: data.color,
+                arrowColor: data.color,
+                dotColor: data.color,
+                todayTextColor: data.color,
+              }}
+              style={styles.calendar}
+            />
+            <ScrollView style={styles.listBox}>
+              {schedulerData
+                .filter((item: any) => item.date === selectedDate)
+                .map((item: any) => (
+                  <View style={styles.listBox2} key={item.idx}>
+                    <Text style={styles.textList}> - {item.title}</Text>
+                  </View>
+                ))}
+            </ScrollView>
+          </>
         ) : null}
       </View>
     </View>
@@ -199,5 +212,27 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingLeft: 10,
     justifyContent: 'center',
+  },
+  listBox2: {
+    width: constant.width * 0.7,
+    height: 50,
+    marginLeft: 20,
+    justifyContent: 'center',
+    borderBottomWidth: 1,
+    borderColor: 'black',
+  },
+  textList: {
+    fontSize: 20,
+    borderBottomWidth: 1,
+    marginLeft: 15,
+  },
+  listBox: {
+    width: constant.width * 0.8,
+    marginLeft: 20,
+    height: 200,
+    marginTop: 20,
+    marginBottom: 20,
+    borderRadius: 10,
+    backgroundColor: '#E1D7F4',
   },
 })
