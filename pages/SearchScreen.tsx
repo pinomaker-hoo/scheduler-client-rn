@@ -24,7 +24,7 @@ export default function SearchScreen({navigation}: any) {
 
   useEffect(() => {
     callApi()
-  }, [])
+  }, [dataList])
 
   const callApi = async () => {
     const {data} = await getGroupList()

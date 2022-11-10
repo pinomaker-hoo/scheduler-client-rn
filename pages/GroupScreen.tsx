@@ -24,7 +24,7 @@ export default function GroupScreen({navigation}: any) {
 
   useEffect(() => {
     callApi()
-  }, [])
+  }, [dataList])
 
   const callApi = async () => {
     const {data}: any = await findGroupUser()

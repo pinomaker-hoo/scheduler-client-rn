@@ -58,8 +58,12 @@ export default function HomeScreen({navigation}: any) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text>{day.name}</Text>
-        <Text>D - {getDday(day.date)}</Text>
+        {day ? (
+          <>
+            <Text>{day.name}</Text>
+            <Text>D - {getDday(day.date)}</Text>
+          </>
+        ) : null}
       </View>
       <View style={styles.body}>
         <View style={styles.calendarBox}>

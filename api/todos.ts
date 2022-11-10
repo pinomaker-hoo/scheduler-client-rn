@@ -7,14 +7,19 @@ const todos = axios.create({
   withCredentials: true,
 })
 
-export const saveTodos = async (date: string, place: string, title: string) => {
+export const saveTodos = async (
+  date: string,
+  place: string,
+  title: string,
+  year: boolean,
+) => {
   try {
     const token = await AsyncStorage.getItem('accesstoken')
     const jsonParser = token && (await JSON.parse(token))
     const {data} = await todos({
       method: 'post',
       url: '/',
-      data: {date, place, title},
+      data: {date, place, title, year},
       headers: {
         accesstoken: jsonParser,
       },

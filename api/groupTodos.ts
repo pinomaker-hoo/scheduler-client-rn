@@ -24,6 +24,7 @@ export const saveGroupTodos = async (
   place: string,
   title: string,
   idx: string,
+  year: string,
 ) => {
   try {
     const token = await AsyncStorage.getItem('accesstoken')
@@ -31,7 +32,7 @@ export const saveGroupTodos = async (
     const {data} = await groupTodos({
       method: 'post',
       url: `/${idx}`,
-      data: {date, place, title},
+      data: {date, place, title, year},
       headers: {
         accesstoken: jsonParser,
       },

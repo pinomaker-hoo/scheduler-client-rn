@@ -83,7 +83,6 @@ export const updatePassword = async (password: string) => {
         accesstoken: jsonParser,
       },
     })
-
     return data
   } catch (err) {
     console.log(err)

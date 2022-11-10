@@ -1,3 +1,4 @@
+import {parseTwoDigitYear} from 'moment'
 import React, {useState} from 'react'
 import {
   StyleSheet,
@@ -10,9 +11,11 @@ import {
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import {saveTodos} from '../api/todos'
 import {formatDate} from '../common/common'
+import RNPickerSelect from 'react-native-picker-select'
 
 export default function NewDoingScreen({navigation}: any) {
   const [title, setTitle] = useState('')
+  const [year, setYear]: any = useState(false)
   const [place, setPlace] = useState('')
   const [date, setDate] = useState('')
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
@@ -32,7 +35,7 @@ export default function NewDoingScreen({navigation}: any) {
 
   const onPressAddBtn = async () => {
     try {
-      const {data} = await saveTodos(date, place, title)
+      const {data} = await saveTodos(date, place, title, year)
       if (!data) return Alert.alert('ERROR 발생')
       navigation.navigate('Root')
     } catch (err) {
@@ -73,6 +76,17 @@ export default function NewDoingScreen({navigation}: any) {
           placeholder="장소"
           style={styles.textInput}
         />
+        <View style={styles.select}>
+          <RNPickerSelect
+            value={year}
+            onValueChange={value => setYear(value)}
+            items={[
+              {label: '1회', value: false},
+              {label: '반복', value: true},
+            ]}
+            placeholder="색상 선택"
+          />
+        </View>
         <TouchableOpacity onPress={onPressAddBtn}>
           <Text>추가하기</Text>
         </TouchableOpacity>
@@ -103,5 +117,15 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderRadius: 10,
     padding: 10,
+  },
+  select: {
+    width: 240,
+    height: 45,
+    borderWidth: 3,
+    borderColor: '#D9D9D9',
+    marginBottom: 20,
+    borderRadius: 10,
+    paddingLeft: 10,
+    justifyContent: 'center',
   },
 })
