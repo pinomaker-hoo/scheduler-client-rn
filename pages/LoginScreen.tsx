@@ -31,6 +31,7 @@ export default function LoginScreen({navigation}: any) {
       navigation.navigate('Root')
     } catch (err) {
       console.log(err)
+      Alert.alert("ERROR")
     }
   }
 

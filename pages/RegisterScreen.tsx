@@ -7,7 +7,6 @@ import {
   Alert,
   View,
   Image,
-  Button,
 } from 'react-native'
 import {launchImageLibrary} from 'react-native-image-picker'
 import {findUserById, register} from '../api/auth'
@@ -36,7 +35,7 @@ export default function RegisterScreen({navigation}: any) {
     const {data} = await register(id, name, password, base)
     if (!data) return Alert.alert('회원 가입 실패')
     Alert.alert('회원 가입 성공')
-    navigation.navigate('Login')
+    return navigation.navigate('Login')
   }
 
   const handleChoosePhoto = () => {
