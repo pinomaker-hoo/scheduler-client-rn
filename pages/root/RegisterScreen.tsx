@@ -9,8 +9,8 @@ import {
   Image,
 } from 'react-native'
 import {launchImageLibrary} from 'react-native-image-picker'
-import {findUserById, register} from '../api/auth'
-import {imgToBase64Code, nullCheck} from '../common/common'
+import {findUserById, register} from '../../api/auth'
+import {imgToBase64Code, nullCheck} from '../../common/common'
 
 export default function RegisterScreen({navigation}: any) {
   const [name, setName] = useState('')
@@ -55,7 +55,7 @@ export default function RegisterScreen({navigation}: any) {
         </TouchableOpacity>
       ) : (
         <TouchableOpacity onPress={handleChoosePhoto}>
-          <Image style={styles.img} source={require('../assets/user.png')} />
+          <Image style={styles.img} source={require('../../assets/user.png')} />
         </TouchableOpacity>
       )}
       <TextInput

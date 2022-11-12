@@ -1,20 +1,21 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import {
+  StyleSheet,
   View,
   Text,
-  TouchableOpacity,
-  StyleSheet,
   TextInput,
+  TouchableOpacity,
   Alert,
 } from 'react-native'
-import {formatDate} from '../common/common'
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
-import {getDay, saveDay} from '../api/day'
+import {saveGroupTodos} from '../../api/groupTodos'
+import {formatDate} from '../../common/common'
 
-export default function DateScreen({navigation}: any) {
+export default function GroupNewDoingScreen(props: any) {
+  const [title, setTitle] = useState('')
+  const [place, setPlace] = useState('')
   const [date, setDate] = useState('')
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
-  const [title, setTitle] = useState('')
 
   const showDatePicker = () => {
     setDatePickerVisibility(true)
@@ -31,9 +32,15 @@ export default function DateScreen({navigation}: any) {
 
   const onPressAddBtn = async () => {
     try {
-      const {data}: any = await saveDay(title, date)
-      if (data) return navigation.navigate('Root')
-      return Alert.alert('ERROR')
+      const {data} = await saveGroupTodos(
+        date,
+        place,
+        title,
+        props.route.params.state,
+        'false',
+      )
+      if (!data) return Alert.alert('ERROR 발생')
+      props.navigation.navigate('Root')
     } catch (err) {
       console.log(err)
     }
@@ -42,7 +49,7 @@ export default function DateScreen({navigation}: any) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text>디데이 설정</Text>
+        <Text>일정 추가</Text>
       </View>
       <View style={styles.body}>
         <TextInput
@@ -67,6 +74,11 @@ export default function DateScreen({navigation}: any) {
             onCancel={hideDatePicker}
           />
         </TouchableOpacity>
+        <TextInput
+          onChangeText={place => setPlace(place)}
+          placeholder="장소"
+          style={styles.textInput}
+        />
         <TouchableOpacity onPress={onPressAddBtn}>
           <Text>추가하기</Text>
         </TouchableOpacity>
@@ -74,7 +86,6 @@ export default function DateScreen({navigation}: any) {
     </View>
   )
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

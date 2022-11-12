@@ -9,8 +9,8 @@ import {
   Alert,
 } from 'react-native'
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
-import {saveTodos} from '../api/todos'
-import {formatDate} from '../common/common'
+import {saveTodos} from '../../api/todos'
+import {formatDate} from '../../common/common'
 import RNPickerSelect from 'react-native-picker-select'
 
 export default function NewDoingScreen({navigation}: any) {

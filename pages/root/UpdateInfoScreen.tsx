@@ -8,10 +8,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import {imgToBase64Code, nullCheck} from '../common/common'
+import {imgToBase64Code, nullCheck} from '../../common/common'
 import {launchImageLibrary} from 'react-native-image-picker'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import {deleteUser, updateImg, updatePassword} from '../api/auth'
+import {deleteUser, updateImg, updatePassword} from '../../api/auth'
 
 export default function UpdateInfoScreen({navigation}: any) {
   const [photo, setPhoto]: any = useState(null)

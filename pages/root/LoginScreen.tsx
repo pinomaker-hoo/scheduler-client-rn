@@ -8,8 +8,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import {login} from '../api/auth'
-import {nullCheck} from '../common/common'
+import {login} from '../../api/auth'
+import {nullCheck} from '../../common/common'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function LoginScreen({navigation}: any) {
@@ -31,14 +31,14 @@ export default function LoginScreen({navigation}: any) {
       navigation.navigate('Root')
     } catch (err) {
       console.log(err)
-      Alert.alert("ERROR")
+      Alert.alert('ERROR')
     }
   }
 
   return (
     <View style={styles.container}>
       <View style={styles.logoBox}>
-        <Image style={styles.img} source={require('../assets/logo.png')} />
+        <Image style={styles.img} source={require('../../assets/logo.png')} />
       </View>
       <View style={styles.bodyBox}>
         <TextInput

@@ -9,9 +9,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import {joinGroup} from '../api/groupUser'
-import constant from '../common/constant'
-import {getGroupList} from '../api/group'
+import {joinGroup} from '../../api/groupUser'
+import constant from '../../common/constant'
+import {getGroupList} from '../../api/group'
 
 export default function SearchScreen({navigation}: any) {
   const [keyword, setKeyword] = useState('')

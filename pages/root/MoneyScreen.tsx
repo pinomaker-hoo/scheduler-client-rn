@@ -1,12 +1,5 @@
 import React, {memo, useState} from 'react'
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  TextInput,
-  ScrollView,
-} from 'react-native'
+import {View, Text, TouchableOpacity, StyleSheet, TextInput} from 'react-native'
 
 export default function MoneyScreen({navigation}: any) {
   const [pay, setPay] = useState(0)

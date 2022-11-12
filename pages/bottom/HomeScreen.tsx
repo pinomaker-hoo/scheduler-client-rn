@@ -7,10 +7,10 @@ import {
   ScrollView,
 } from 'react-native'
 import {Calendar} from 'react-native-calendars'
-import {getDay} from '../api/day'
-import {getTodos} from '../api/todos'
-import {formatDate} from '../common/common'
-import constant from '../common/constant'
+import {getDay} from '../../api/day'
+import {getTodos} from '../../api/todos'
+import {formatDate} from '../../common/common'
+import constant from '../../common/constant'
 
 export default function HomeScreen({navigation}: any) {
   const [selectedDate, setSelectedDate] = useState(formatDate(new Date()))
@@ -19,16 +19,15 @@ export default function HomeScreen({navigation}: any) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    getTodos().then(res => {
-      const {data} = res
-      setDataList(() => data)
-    })
-    getDay().then(res => {
-      const {data: data2}: any = res
-      setDay(() => data2)
-      setLoading(() => false)
-    })
+    callApi().then(() => setLoading(false))
   }, [dataList])
+
+  const callApi = async () => {
+    const {data: todoData} = await getTodos()
+    setDataList(todoData)
+    const {data: dayData} = await getDay()
+    setDay(dayData)
+  }
 
   const onPressNewBtn = () => {
     navigation.navigate('NewDo')
@@ -54,6 +53,7 @@ export default function HomeScreen({navigation}: any) {
     const gap = dday.getTime() - now.getTime()
     return Math.ceil(gap / (1000 * 60 * 60 * 24))
   }
+
   if (loading) return null
   return (
     <View style={styles.container}>

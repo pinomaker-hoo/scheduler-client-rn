@@ -22,7 +22,7 @@ export default function BottomTabNavigator() {
           tabBarIcon: () => (
             <Image
               style={styles.logo}
-              source={require('../assets/search.png')}
+              source={require('../../assets/search.png')}
             />
           ),
         }}
@@ -35,7 +35,7 @@ export default function BottomTabNavigator() {
           tabBarIcon: () => (
             <Image
               style={styles.logo}
-              source={require('../assets/group.png')}
+              source={require('../../assets/group.png')}
             />
           ),
         }}
@@ -46,7 +46,10 @@ export default function BottomTabNavigator() {
         options={{
           title: '',
           tabBarIcon: () => (
-            <Image style={styles.logo} source={require('../assets/home.png')} />
+            <Image
+              style={styles.logo}
+              source={require('../../assets/home.png')}
+            />
           ),
         }}
       />
@@ -58,7 +61,7 @@ export default function BottomTabNavigator() {
           tabBarIcon: () => (
             <Image
               style={styles.logo}
-              source={require('../assets/admin.png')}
+              source={require('../../assets/admin.png')}
             />
           ),
         }}

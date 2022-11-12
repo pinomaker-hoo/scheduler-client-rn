@@ -1,6 +1,6 @@
 import {NavigationContainer} from '@react-navigation/native'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
-import BottomTabNavigator from './BottomNavigator'
+import BottomTabNavigator from '../bottom/BottomNavigator'
 import DateScreen from './DateScreen'
 import GroupNewDoingScreen from './GroupNewDoingScreen'
 import LoginScreen from './LoginScreen'

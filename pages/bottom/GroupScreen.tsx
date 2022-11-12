@@ -9,12 +9,11 @@ import {
   View,
 } from 'react-native'
 import {Calendar} from 'react-native-calendars'
-import {getGroup, getGroupList} from '../api/group'
-import {getGroupTodosList} from '../api/groupTodos'
-import {deleteGroupUser, findGroupUser} from '../api/groupUser'
-import {formatDate} from '../common/common'
-import constants from '../common/constant'
-import constant from '../common/constant'
+import {getGroup, getGroupList} from '../../api/group'
+import {getGroupTodosList} from '../../api/groupTodos'
+import {deleteGroupUser, findGroupUser} from '../../api/groupUser'
+import {formatDate} from '../../common/common'
+import constant from '../../common/constant'
 
 export default function GroupScreen({navigation}: any) {
   const [loading, setLoading] = useState(true)
@@ -188,8 +187,8 @@ const styles = StyleSheet.create({
   },
   lows: {
     flexDirection: 'row',
-    width: constants.width - 40,
-    height: constants.width / 7,
+    width: constant.width - 40,
+    height: constant.width / 7,
     backgroundColor: '#D9D9D9',
     marginBottom: 20,
     alignItems: 'center',
@@ -198,7 +197,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 18,
     marginLeft: 20,
-    width: constants.width - 250,
+    width: constant.width - 250,
   },
   btn: {
     width: 50,

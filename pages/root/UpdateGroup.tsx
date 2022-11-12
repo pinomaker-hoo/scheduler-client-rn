@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {
   Alert,
   StyleSheet,
@@ -7,47 +7,79 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import {saveGroup} from '../api/group'
-import {joinGroup} from '../api/groupUser'
-import {nullCheck} from '../common/common'
+import {deleteGroup, getGroup, saveGroup, updateGroup} from '../../api/group'
+import {nullCheck} from '../../common/common'
 import RNPickerSelect from 'react-native-picker-select'
 
-export default function MakeGroupScreen({navigation}: any) {
+export default function UpdateGroup(props: any) {
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
   const [memberCount, setMemberCount] = useState('')
   const [color, setColor] = useState('')
+  const [data, setData]: any = useState()
+  const [loading, setLoading] = useState(true)
 
-  const onPress = async () => {
+  useEffect(() => {
+    callApi()
+  }, [])
+
+  const callApi = async () => {
+    const {data}: any = await getGroup(props.route.params.state)
+    setName(data.name)
+    setPassword(data.password)
+    setColor(data.color)
+    setMemberCount(data.memberCount)
+    setLoading(false)
+  }
+
+  const onPressUpdate = async () => {
     if (!nullCheck([name, password, memberCount, color]))
       return Alert.alert('입력 하세요.')
-    const {data} = await saveGroup(name, password, Number(memberCount), color)
-    const {data: data2}: any = await joinGroup(data.idx)
-    if (data2) return navigation.navigate('Root')
+    const {data} = await updateGroup(
+      name,
+      password,
+      Number(memberCount),
+      color,
+      props.route.params.state,
+    )
+    if (data) return props.navigation.navigate('그룹')
     return Alert.alert('ERROR')
   }
 
+  const onPressAddTodos = async () => {
+    props.navigation.navigate('GroupNewDo', {state: props.route.params.state})
+  }
+
+  const onPressDeleteGroup = async () => {
+    const {data}: any = await deleteGroup(props.route.params.state)
+    if (!data) return Alert.alert('ERROR')
+    Alert.alert('삭제하였습니다.')
+    return props.navigation.navigate('그룹')
+  }
+
+  if (loading) return null
   return (
     <View style={styles.container}>
-      <Text style={styles.headerText}>그룹 만들기</Text>
+      <Text style={styles.headerText}>그룹 설정</Text>
       <TextInput
         onChangeText={name => setName(name)}
-        placeholder="그룹 이름"
+        value={name}
         style={styles.textInput}
       />
       <TextInput
         onChangeText={password => setPassword(password)}
-        placeholder="비밀번호"
+        value={password}
         secureTextEntry={true}
         style={styles.textInput}
       />
       <TextInput
         onChangeText={memberCount => setMemberCount(memberCount)}
-        placeholder="정원 선택"
+        value={String(memberCount)}
         style={styles.textInput}
       />
       <View style={styles.select}>
         <RNPickerSelect
+          value={color}
           onValueChange={value => setColor(value)}
           items={[
             {label: 'BLUE', value: 'blue'},
@@ -59,8 +91,14 @@ export default function MakeGroupScreen({navigation}: any) {
           placeholder="색상 선택"
         />
       </View>
-      <TouchableOpacity style={styles.btn} onPress={onPress}>
-        <Text style={styles.btnText}>생성하기</Text>
+      <TouchableOpacity style={styles.btn} onPress={onPressUpdate}>
+        <Text style={styles.btnText}>재설정하기</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.btn} onPress={onPressAddTodos}>
+        <Text style={styles.btnText}>일정 추가하기</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.btn} onPress={onPressDeleteGroup}>
+        <Text style={styles.btnText}>그룹 삭제하기</Text>
       </TouchableOpacity>
     </View>
   )

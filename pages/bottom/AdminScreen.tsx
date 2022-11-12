@@ -45,7 +45,7 @@ export default function AdminScreen({navigation}: any) {
             source={{uri: `http://localhost:3020${user.image.substr(1)}.jpg`}}
           />
         ) : (
-          <Image style={styles.img} source={require('../assets/user.png')} />
+          <Image style={styles.img} source={require('../../assets/user.png')} />
         )}
         <Text style={styles.bodyText}>{user.name}</Text>
         <TouchableOpacity style={styles.bodyBtn} onPress={onPressUpdate}>
