@@ -1,9 +1,10 @@
 'use strict'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import {BASE_SERVER_URL} from '.'
 
 const todos = axios.create({
-  baseURL: 'http://localhost:3020/todos',
+  baseURL: `${BASE_SERVER_URL}/todos`,
   withCredentials: true,
 })
 

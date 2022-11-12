@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react'
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import {BASE_SERVER_URL} from '../../api'
 
 export default function AdminScreen({navigation}: any) {
   const [loading, setLoading] = useState(true)
@@ -42,7 +43,7 @@ export default function AdminScreen({navigation}: any) {
         {user.image ? (
           <Image
             style={styles.img}
-            source={{uri: `http://localhost:3020${user.image.substr(1)}.jpg`}}
+            source={{uri: `${BASE_SERVER_URL}${user.image.substr(1)}.jpg`}}
           />
         ) : (
           <Image style={styles.img} source={require('../../assets/user.png')} />

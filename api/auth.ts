@@ -1,9 +1,10 @@
 'use strict'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import {BASE_SERVER_URL} from '.'
 
 const auth = axios.create({
-  baseURL: 'http://localhost:3020/auth',
+  baseURL: `${BASE_SERVER_URL}/auth`,
   withCredentials: true,
 })
 

@@ -11,6 +11,7 @@ import {imgToBase64Code} from '../../common/common'
 import {launchImageLibrary} from 'react-native-image-picker'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {deleteUser, updateImg, updatePassword} from '../../api/auth'
+import {BASE_SERVER_URL} from '../../api'
 
 export default function UpdateInfoScreen({navigation}: any) {
   const [photo, setPhoto]: any = useState(null)
@@ -100,7 +101,7 @@ export default function UpdateInfoScreen({navigation}: any) {
         <TouchableOpacity onPress={handleChoosePhoto}>
           <Image
             style={styles.img}
-            source={{uri: `http://localhost:3020${user.image.substr(1)}.jpg`}}
+            source={{uri: `${BASE_SERVER_URL}${user.image.substr(1)}.jpg`}}
           />
         </TouchableOpacity>
       )}

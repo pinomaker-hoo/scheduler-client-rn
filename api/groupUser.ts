@@ -2,9 +2,10 @@
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {Alert} from 'react-native'
+import {BASE_SERVER_URL} from '.'
 
 const groupUser = axios.create({
-  baseURL: 'http://localhost:3020/groupUser',
+  baseURL: `${BASE_SERVER_URL}/groupUser`,
   withCredentials: true,
 })
 

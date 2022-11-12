@@ -1,9 +1,10 @@
 'use strict'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import {BASE_SERVER_URL} from '.'
 
 const groupTodos = axios.create({
-  baseURL: 'http://localhost:3020/groupTodos',
+  baseURL: `${BASE_SERVER_URL}/groupTodos`,
   withCredentials: true,
 })
 
