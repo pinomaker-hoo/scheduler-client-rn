@@ -105,7 +105,7 @@ export default function UpdateInfoScreen({navigation}: any) {
           />
         </TouchableOpacity>
       )}
-      <Text style={styles.bodyText}>김도연</Text>
+      <Text style={styles.bodyText}>{user.name}</Text>
       <TouchableOpacity style={styles.btn} onPress={onPressChangePassword}>
         <Text style={styles.btnText}>비밀번호 변경</Text>
       </TouchableOpacity>

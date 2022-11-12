@@ -75,7 +75,7 @@ const CalenderView = (props: any) => {
 
   useEffect(() => {
     callApi()
-  }, [])
+  }, [data])
 
   const callApi = async () => {
     const {data}: any = await getGroup(props.data.group.idx)

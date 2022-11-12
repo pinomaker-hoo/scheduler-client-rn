@@ -81,8 +81,8 @@ export default function NewDoingScreen({navigation}: any) {
             value={year}
             onValueChange={value => setYear(value)}
             items={[
-              {label: '1회', value: false},
-              {label: '반복', value: true},
+              {label: '1회', value: false, key: '0'},
+              {label: '반복', value: true, key: '1'},
             ]}
             placeholder="색상 선택"
           />

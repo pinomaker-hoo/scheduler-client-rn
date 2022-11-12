@@ -37,6 +37,7 @@ export default function GroupNewDoingScreen(props: any) {
         place,
         title,
         props.route.params.state,
+        'false',
       )
       if (!data) return Alert.alert('ERROR 발생')
       props.navigation.navigate('Root')

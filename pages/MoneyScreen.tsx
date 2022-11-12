@@ -24,22 +24,21 @@ export default function MoneyScreen({navigation}: any) {
       </View>
       <View style={styles.body}>
         <View style={styles.rowsView}>
-          <Text>시급</Text>
+          <Text style={styles.bodyText}>시급</Text>
           <TextInput
             onChangeText={pay => setPay(Number(pay))}
             style={styles.textInput}
-            // value={pay.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
           />
         </View>
         <View style={styles.rowsView}>
-          <Text>시간</Text>
+          <Text style={styles.bodyText}>시간</Text>
           <TextInput
             onChangeText={hours => setHours(Number(hours))}
             style={styles.textInput}
           />
         </View>
         <View style={styles.rowsView}>
-          <Text>급여</Text>
+          <Text style={styles.bodyText}>급여</Text>
           <Text style={styles.textInput}>
             {String(money)
               .toString()
@@ -81,9 +80,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
   },
-  rowsView: {
-    flexDirection: 'row',
-  },
+  rowsView: {},
   btn: {
     width: 240,
     height: 45,
@@ -91,5 +88,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  bodyText: {
+    marginLeft: 10,
+    marginBottom: 10,
   },
 })
