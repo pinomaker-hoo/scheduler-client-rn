@@ -1,4 +1,4 @@
-import React, {memo, useState} from 'react'
+import React, {useState} from 'react'
 import {View, Text, TouchableOpacity, StyleSheet, TextInput} from 'react-native'
 
 export default function MoneyScreen({navigation}: any) {

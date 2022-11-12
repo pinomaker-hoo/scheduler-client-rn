@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native'
 import {Calendar} from 'react-native-calendars'
-import {getGroup, getGroupList} from '../../api/group'
+import {getGroup} from '../../api/group'
 import {getGroupTodosList} from '../../api/groupTodos'
 import {deleteGroupUser, findGroupUser} from '../../api/groupUser'
 import {formatDate} from '../../common/common'
@@ -18,7 +18,6 @@ import constant from '../../common/constant'
 export default function GroupScreen({navigation}: any) {
   const [loading, setLoading] = useState(true)
   const [dataList, setDataList]: any = useState([])
-  const [groupList, setGroupList]: any = useState([])
   const [user, setUser]: any = useState()
 
   useEffect(() => {
@@ -27,11 +26,9 @@ export default function GroupScreen({navigation}: any) {
 
   const callApi = async () => {
     const {data}: any = await findGroupUser()
-    const {data: data2}: any = await getGroupList()
     const user = await AsyncStorage.getItem('user')
     const jsonParser = user && (await JSON.parse(user))
     setUser(jsonParser)
-    setGroupList(data2)
     setDataList(data)
     setLoading(false)
   }
@@ -68,19 +65,19 @@ const CalenderView = (props: any) => {
   const [selectedDate, setSelectedDate] = useState(formatDate(new Date()))
   const [schedulerData, setSchedulerData] = useState([])
   const [toggled, setToggled] = useState(false)
-  const [data, setData]: any = useState()
+  const [group, setGroup]: any = useState()
   const [loading, setLoading] = useState(true)
   const [user, setUser]: any = useState()
 
   useEffect(() => {
     callApi()
-  }, [data])
+  }, [group])
 
   const callApi = async () => {
     const {data}: any = await getGroup(props.data.group.idx)
     const {data: todoData} = await getGroupTodosList(props.data.group.idx)
     setSchedulerData(todoData)
-    setData(data)
+    setGroup(data)
     const user = await AsyncStorage.getItem('user')
     const jsonParser = user && (await JSON.parse(user))
     setUser(jsonParser)
@@ -95,7 +92,7 @@ const CalenderView = (props: any) => {
   }
 
   const onPressUpdateBtn = async () => {
-    props.func('UpdateGroup', data.idx)
+    props.func('UpdateGroup', group.idx)
   }
 
   const onPressScheduler = async (idx: number) => {
@@ -120,8 +117,8 @@ const CalenderView = (props: any) => {
   return (
     <View>
       <View style={styles.lows}>
-        <Text style={styles.text}>{data.name}</Text>
-        {user.idx && user.idx === data.madePerson.idx ? (
+        <Text style={styles.text}>{group.name}</Text>
+        {user.idx && user.idx === group.madePerson.idx ? (
           <TouchableOpacity style={styles.btn} onPress={onPressUpdateBtn}>
             <Text style={styles.btnText}>수정</Text>
           </TouchableOpacity>
@@ -131,7 +128,7 @@ const CalenderView = (props: any) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.btn}
-          onPress={() => onPressScheduler(data.idx)}
+          onPress={() => onPressScheduler(group.idx)}
         >
           <Text style={styles.btnText}>스케줄표</Text>
         </TouchableOpacity>
@@ -145,10 +142,10 @@ const CalenderView = (props: any) => {
                 setSelectedDate(day.dateString)
               }}
               theme={{
-                selectedDayBackgroundColor: data.color,
-                arrowColor: data.color,
-                dotColor: data.color,
-                todayTextColor: data.color,
+                selectedDayBackgroundColor: group.color,
+                arrowColor: group.color,
+                dotColor: group.color,
+                todayTextColor: group.color,
               }}
               style={styles.calendar}
             />
@@ -167,6 +164,7 @@ const CalenderView = (props: any) => {
     </View>
   )
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

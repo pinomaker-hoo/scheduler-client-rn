@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import {deleteGroup, getGroup, saveGroup, updateGroup} from '../../api/group'
+import {deleteGroup, getGroup, updateGroup} from '../../api/group'
 import {nullCheck} from '../../common/common'
 import RNPickerSelect from 'react-native-picker-select'
 
@@ -16,7 +16,6 @@ export default function UpdateGroup(props: any) {
   const [password, setPassword] = useState('')
   const [memberCount, setMemberCount] = useState('')
   const [color, setColor] = useState('')
-  const [data, setData]: any = useState()
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {

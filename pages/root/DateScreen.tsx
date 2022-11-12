@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
 } from 'react-native'
 import {formatDate} from '../../common/common'
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
-import {getDay, saveDay} from '../../api/day'
+import {saveDay} from '../../api/day'
 
 export default function DateScreen({navigation}: any) {
   const [date, setDate] = useState('')

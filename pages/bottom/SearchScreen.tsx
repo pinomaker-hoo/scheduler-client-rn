@@ -18,9 +18,6 @@ export default function SearchScreen({navigation}: any) {
   const [dataList, setDataList]: any = useState([])
   const [loading, setLoading] = useState(true)
   const [user, setUser]: any = useState()
-  const onPress = () => {
-    navigation.navigate('MakeGroup')
-  }
 
   useEffect(() => {
     callApi()
@@ -29,14 +26,14 @@ export default function SearchScreen({navigation}: any) {
   const callApi = async () => {
     const {data} = await getGroupList()
     setDataList(data)
-    await setUserFunc()
-    setLoading(false)
-  }
-
-  const setUserFunc = async () => {
     const user = await AsyncStorage.getItem('user')
     const jsonParserUser = user && (await JSON.parse(user))
     setUser(jsonParserUser)
+    setLoading(false)
+  }
+
+  const onPress = () => {
+    navigation.navigate('MakeGroup')
   }
 
   const onPressPrompt = async (a: string, b: string, idx: number) => {
